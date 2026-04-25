@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NeonUPS - Open Source Universal Modular Power Management System. Build a modular, intelligent, and sustainable DC power system for home, makers, and remote infrastructure.">
+    <meta name="keywords" content="NeonUPS, open source power management, modular power system, 36V DC bus, CAN bus, IoT power distribution, home energy center, maker power supply, remote power control, DC microgrid">
+    <meta name="author" content="NeonUPS Project">
+    <meta property="og:title" content="NeonUPS - Open Source Universal Modular Power Management">
+    <meta property="og:description" content="A highly modular, open-source intelligent power management system based on 36V DC bus and CAN communication.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://neon-ups.org">
+    <title>NeonUPS — Open Source Universal Modular Power Management</title>
+    <link rel="canonical" href="https://neon-ups.org">
+    <link rel="alternate" hreflang="en" href="https://neon-ups.org?lang=en">
+    <link rel="alternate" hreflang="zh" href="https://neon-ups.org?lang=zh">
+    <style>
+        :root {
+            --bg: #0a0c0f;
+            --card-bg: #14171c;
+            --text: #e0e4ea;
+            --text-secondary: #9aa0b0;
+            --accent: #00e5ff;
+            --accent2: #d500f9;
+            --accent-glow: 0 0 12px rgba(0, 229, 255, 0.5);
+            --border: #2a2e38;
+            --radius: 18px;
+            --max-width: 1100px;
+            --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        a:hover {
+            color: #80f0ff;
+            text-shadow: 0 0 6px var(--accent);
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(10, 12, 15, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 12px rgba(0, 229, 255, 0.4));
+        }
+        .lang-switch {
+            display: flex;
+            gap: 6px;
+            background: var(--card-bg);
+            border-radius: 40px;
+            padding: 4px;
+            border: 1px solid var(--border);
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--font-sans);
+        }
+        .lang-btn.active {
+            background: var(--accent);
+            color: #0a0c0f;
+            box-shadow: var(--accent-glow);
+            font-weight: 600;
+        }
+        .lang-btn:hover:not(.active) {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 70px 0 50px;
+            text-align: center;
+            position: relative;
+        }
+        .hero h1 {
+            font-size: clamp(2.8rem, 8vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--accent) 0%, #b388ff 70%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 28px rgba(0, 229, 255, 0.35));
+            margin-bottom: 18px;
+            line-height: 1.2;
+        }
+        .hero .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 30px;
+            font-weight: 400;
+        }
+        .badge-group {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .badge {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .badge i {
+            color: var(--accent);
+        }
+        .gh-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #1f2229;
+            border: 1px solid var(--border);
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-weight: 500;
+            transition: all 0.2s;
+            color: var(--text);
+        }
+        .gh-link:hover {
+            border-color: var(--accent);
+            box-shadow: var(--accent-glow);
+        }
+
+        /* Sections */
+        section {
+            padding: 70px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 24px;
+            position: relative;
+            display: inline-block;
+        }
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            border-radius: 4px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 28px 0 16px;
+            color: #f0f4ff;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            transition: all 0.25s;
+        }
+        .card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 229, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        .card h3 {
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        .card p, .card ul {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .card ul {
+            padding-left: 20px;
+            margin: 12px 0 0;
+        }
+        .card ul li {
+            margin-bottom: 6px;
+        }
+
+        .highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        @media (max-width: 768px) {
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* architecture detail blocks */
+        .arch-block {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 28px;
+        }
+
+        /* Recruitment */
+        .recruit-card {
+            background: linear-gradient(145deg, #1a1e27, #0f1219);
+            border: 1px solid #3a3150;
+            border-radius: var(--radius);
+            padding: 40px;
+            text-align: center;
+        }
+        .recruit-card h2 {
+            margin-bottom: 16px;
+        }
+        .roles {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+            margin: 30px 0;
+        }
+        .role-tag {
+            background: #1f2330;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .email-link {
+            display: inline-block;
+            background: var(--accent);
+            color: #0a0c0f;
+            font-weight: 700;
+            padding: 12px 32px;
+            border-radius: 40px;
+            margin-top: 20px;
+            transition: 0.2s;
+            box-shadow: 0 0 18px rgba(0, 229, 255, 0.35);
+        }
+        .email-link:hover {
+            background: #80f0ff;
+            box-shadow: 0 0 28px rgba(0, 229, 255, 0.55);
+            color: #000;
+        }
+        .note {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 18px;
+        }
+
+        footer {
+            padding: 30px 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* language display control */
+        [data-lang] {
+            display: none;
+        }
+        [data-lang].active {
+            display: block;
+        }
+        span[data-lang].active, a[data-lang].active, li[data-lang].active {
+            display: inline;
+        }
+        div[data-lang].active, section[data-lang].active, p[data-lang].active, h2[data-lang].active, h3[data-lang].active {
+            display: block;
+        }
+
+        /* smooth transition */
+        .fade-section {
+            opacity: 1;
+            transition: opacity 0.15s;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+            .header-inner {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <div class="logo">⚡ NeonUPS</div>
+            <div class="lang-switch" id="lang-switch">
+                <button class="lang-btn active" data-lang-code="en">EN</button>
+                <button class="lang-btn" data-lang-code="zh">中文</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero -->
+        <section class="hero">
+            <h1>NeonUPS</h1>
+            <div data-lang="en" class="subtitle active">Open Source Universal Modular Power Management System — build your own intelligent DC power center like Lego blocks.</div>
+            <div data-lang="zh" class="subtitle">开源通用模块化电源管理系统 — 像搭乐高一样构建你的智能直流供电中心。</div>
+            <div class="badge-group">
+                <span class="badge">🔋 36V DC Bus</span>
+                <span class="badge">🔄 Hot-Swap Modules</span>
+                <span class="badge">🧠 CAN Communication</span>
+                <span class="badge">🌐 IoT & Remote Control</span>
+                <span class="badge">🔓 Fully Open Source</span>
+            </div>
+            <a href="https://github.com/neon9809/NeonUPS" target="_blank" class="gh-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                neon9809/NeonUPS on GitHub
+            </a>
+        </section>
+
+        <!-- Background & Problem -->
+        <section>
+            <h2 data-lang="en" class="active">Background &amp; Problem</h2>
+            <h2 data-lang="zh">背景与问题</h2>
+            <div data-lang="en" class="active">
+                <p>DC power in our daily life is extremely fragmented. Every device comes with its own adapter, leading to bloated power strips, tangled cables, wasted energy, and no way to achieve centralized management or battery-backed uptime. When upgrading devices, the entire power supply chain is often discarded. The rise of smart homes magnifies this pain — curtain motors, sensors, and lights each drag independent power bricks, making wiring, maintenance and emergency power a constant headache.</p>
+            </div>
+            <div data-lang="zh">
+                <p>当前，生活中的直流供电极度碎片化。每个设备配一个专属适配器，导致排插臃肿、线束杂乱、能耗浪费，且无法实现集中管理和停电续航。设备迭代时，电源部分往往只能整体淘汰。智能家居的普及更放大了这一痛点——窗帘电机、传感器、灯具各自拖着独立电源，布线、维护和应急供电都成了难题。</p>
+            </div>
+        </section>
+
+        <!-- Core Philosophy -->
+        <section>
+            <h2 data-lang="en" class="active">Core Philosophy</h2>
+            <h2 data-lang="zh">核心理念</h2>
+            <div data-lang="en" class="active">
+                <p>We envision a <span class="highlight">highly modular, open-source intelligent power management system</span>. It’s a power building-block platform: a basic host frame with expandable slots accepts standardized functional modules — input, output, battery, IoT control, etc. Users assemble their own power center like Lego, tailored to their needs, with intelligent network management.</p>
+                <p><strong>Two fundamental principles:</strong></p>
+                <ul>
+                    <li><strong>Sustainability through Open Source:</strong> Communication protocols and specifications are fully open. Anyone can manufacture compatible modules, preventing iterative device waste.</li>
+                    <li><strong>On-demand Modularity:</strong> Every function is an independent hot-swap module. Need more power? Parallel host frames. Need more features? Add modules. Never obsolete.</li>
+                </ul>
+            </div>
+            <div data-lang="zh">
+                <p>我们想构建一套<span class="highlight">高度模块化、开源的智能电源管理系统</span>。它像一个供电积木平台：以可拓展的主机框架为基础，自由配置标准化的功能模块——输入、输出、电池、物联网控制等。用户根据自己的需求，像搭乐高一样组合出专属的电源中心，并可通过网络进行智能管理。</p>
+                <p><strong>最核心的两条原则：</strong></p>
+                <ul>
+                    <li><strong>基于可持续理念的开源：</strong>通信协议、规范文档全部开放，任何人都能制造兼容模块，避免设备迭代浪费。</li>
+                    <li><strong>按需的模块化：</strong>所有功能都是独立的热插拔模块，功率不够并联主机，功能不够增加模块，永不过时。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Typical Scenarios -->
+        <section>
+            <h2 data-lang="en" class="active">Typical Scenarios</h2>
+            <h2 data-lang="zh">典型场景</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3 data-lang="en" class="active">🏠 Home Energy Center</h3>
+                    <h3 data-lang="zh">🏠 家庭能源中心</h3>
+                    <p data-lang="en" class="active">A shoebox-sized host powers your fiber modem, router, NAS, smart speakers, DC lighting, curtains, robot vacuum, and security gear — all from one place, intelligently distributing energy from grid, solar, and battery. Seamless battery backup during outages keeps the network alive.</p>
+                    <p data-lang="zh">一个鞋盒大小的主机，同时给光猫、路由器、NAS、智能音箱、直流照明系统、窗帘、扫地机器人、安防设备集中供电，统一管理分配来自市电网、光伏、电池的多路能源。停电时内置电池无缝续电，保证网络不断。</p>
+                </div>
+                <div class="card">
+                    <h3 data-lang="en" class="active">🔧 Maker Workbench</h3>
+                    <h3 data-lang="zh">🔧 创客工作台</h3>
+                    <p data-lang="en" class="active">Say goodbye to messy bench supplies. Insert different modules for multiple adjustable voltages, USB fast charging, and battery storage — all outputs programmable.</p>
+                    <p data-lang="zh">告别杂乱的实验电源。通过插入不同模块，快速获得多路可调电压、USB快充和电池储能，所有输出均可编程控制。</p>
+                </div>
+                <div class="card">
+                    <h3 data-lang="en" class="active">🌍 Remote Device Hosting</h3>
+                    <h3 data-lang="zh">🌍 异地设备托管</h3>
+                    <p data-lang="en" class="active">Monitor and control every power channel for equipment in a remote hometown or server room via smartphone. Remotely reboot or switch power on anomaly.</p>
+                    <p data-lang="zh">放在老家或机房的小型设备，通过手机远程监控每路供电状态，异常时远程断电或切换供电。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Extended Vision - Physical & Electrical Architecture -->
+        <section>
+            <h2 data-lang="en" class="active">4.1 Physical &amp; Electrical Architecture</h2>
+            <h2 data-lang="zh">4.1 物理电气架构</h2>
+            <div class="arch-block" data-lang="en" class="active">
+                <h3>36V DC Bus & Topology</h3>
+                <p>The internal bus runs at <span class="highlight">36V DC</span>, below the 60V safety extra-low voltage limit, balancing efficiency and safety. Host frames serve as nodes; they connect in star or multi-frame parallel via high-current DC ports. Need more power? Add frames — scalable like server power supplies.</p>
+                <h3>Connector Specification</h3>
+                <p><strong>Power In/Out:</strong> 5.5mm DC jacks, with distinct male/female or color coding to prevent reverse insertion. 8A continuous per port; dual ports reserved for high-power modules.</p>
+                <p><strong>Communication Bus:</strong> RJ45 (8P8C) carrying CAN signals — locking tab removed for tool-free quick release. One twisted pair used for CAN_H/CAN_L; remaining pins for presence detection, address coding, and future use. ⚠️ <em>Physically resembles Ethernet but is dedicated CAN; never plug into standard network equipment.</em></p>
+                <p><strong>Module-Frame Interface:</strong> Each slot provides both power and CAN contacts, hot-swap ready. Critical modules feature a software locking mechanism: removal must be requested and approved via software before the physical lock releases.</p>
+                <h3>Module Form Factors</h3>
+                <p><strong>Local Modules:</strong> Direct-insert into host frame slots — AC-DC inputs, MPPT solar, multi-voltage outputs, USB PD, batteries, communication.</p>
+                <p><strong>Remote Modules:</strong> Standard 86-panel form factor, installed in walls and connected via 36V DC bus behind the wall. Example: a Type-C PD panel at bedside replaces bulky adapters.</p>
+                <h3>Safety Hardware</h3>
+                <p>Multi-level protection: per-module overcurrent/overtemp/short-circuit; inter-frame link modules monitor current with hardware limits. The <span class="highlight">CO₂ emergency module</span> uses a slow-release valve (not explosive burst) triggered by heat + smoke detection. A supercapacitor backup ensures valve operation even after main power loss.</p>
+                <h3>Ecosystem Bridges</h3>
+                <p><strong>ATX / Server PSU Converter Modules:</strong> Repurpose the massive existing inventory of ATX and server power supplies into 36V bus sources, drastically lowering cost and leveraging familiar hardware.</p>
+            </div>
+            <div class="arch-block" data-lang="zh">
+                <h3>总线电压与拓扑</h3>
+                <p>系统采用<span class="highlight">36V DC</span>作为内部总线电压，低于60V安全特低电压上限，兼顾传输效率与使用安全。总线以主机框架为节点，支持星型或多框架并联。框架之间通过专用的大电流DC接口互联，功率不够就加框架，像服务器电源一样堆叠扩容。</p>
+                <h3>连接器规范</h3>
+                <p><strong>电源进出：</strong>采用5.5mm DC接口，输入口与输出口在物理形态或颜色上明确区分（输入公头、输出母座），防止热插拔误接。单口持续承载上限8A，大功率模块预留双口并联设计。</p>
+                <p><strong>通讯总线：</strong>采用RJ45（8P8C）物理接口承载CAN总线，削除锁止塑料舌以实现无工具快拔。内部仅使用一对双绞线作为CAN_H/CAN_L差分信号，其余引脚分配给模块在位检测、地址编码及预留功能。⚠️ <em>此接口形似以太网，但在本系统中专用于CAN通讯，严禁接入标准网络设备。</em></p>
+                <p><strong>模块-框架接口：</strong>每个插槽同时提供电源触点和CAN信号触点，支持热插拔。关键供电模块配备软件锁止机构——物理拔出前需通过软件端“申请移除”，经确认后释放锁定，防止误操作中断业务。</p>
+                <h3>模块形态</h3>
+                <p><strong>本地模块：</strong>直接插入主机框架的标准槽位，包括输入模块（AC-DC、光伏MPPT）、输出模块（多路可调电压、USB PD）、电池模块、通信模块等。</p>
+                <p><strong>Remote模块：</strong>标准86面板形态，安装于墙壁终端，通过墙内36V直流母线与主机框架相连。例如Type-C PD面板直接嵌入床头或沙发旁，既为设备快充，又省去传统电源适配器。</p>
+                <h3>安全硬件</h3>
+                <p>系统在电气层面内置多级硬件保护：每个模块自带过流、过温、短路保护；串接模块（多框架互联时使用）实时监测线路承载电流并设有硬件电流上限；二氧化碳应急模块采用<span class="highlight">缓慢释放</span>机制，通过微型电磁阀与压力调节器控制气瓶。模块内置超级电容备用电源，确保主电源切断后仍能完成阀门开启。</p>
+                <h3>生态桥接</h3>
+                <p><strong>ATX / 服务器电源转换模块：</strong>将存量巨大的ATX和服务器可插拔电源模块接入36V总线，拉低系统供电成本，为创客提供高性价比动力源。</p>
+            </div>
+        </section>
+
+        <!-- Communication Architecture -->
+        <section>
+            <h2 data-lang="en" class="active">4.2 Communication Architecture</h2>
+            <h2 data-lang="zh">4.2 通讯架构</h2>
+            <div class="arch-block" data-lang="en" class="active">
+                <h3>CAN Bus Protocol</h3>
+                <p><span class="highlight">CAN bus</span> is the core communication backbone, leveraging native multi-master, non-destructive arbitration and real-time performance. The CAN controller is built into the host frame; modules only need a CAN transceiver and minimal logic, drastically lowering development cost for third parties. The frame handles bus arbitration, address assignment, heartbeat, and policy execution.</p>
+                <h3>Addressing & Multi-Frame Interconnection</h3>
+                <p>Modules receive a CAN ID automatically via hardware address pins on insertion — no pre-configuration. Multiple host frames coexist on the same CAN bus; CAN natively supports multiple controllers. Frames collaborate through application-layer redundancy: hot-standby, load sharing, or fully distributed control.</p>
+                <h3>Distributed Watchdog System</h3>
+                <p>Watchdog functionality is no longer fixed to the frame. It’s a tiered service configurable by the user:</p>
+                <ul>
+                    <li><strong>Hardware Level (module self-protection):</strong> Built-in overcurrent/overtemp trip, zero external dependency.</li>
+                    <li><strong>Link Level (frame direct):</strong> Frame sends periodic heartbeat to modules on its slots; timeout triggers a safe preset action.</li>
+                    <li><strong>Service Level (programmable remote watchdog):</strong> User-defined policies delivered from a server via communication modules — adjustable timeout, retries, and actions (restart, shutdown, source switch). Ideal for remote hosting.</li>
+                    <li><strong>Redundant Cross-Feeding:</strong> Multiple communication modules (4G, Wi‑Fi, Ethernet, LoRa) independently feed watchdogs. Multiple sources "watch each other"; catastrophic action requires consensus, preventing false triggers.</li>
+                </ul>
+                <h3>Full Module Observability</h3>
+                <p>All modules report real-time parameters over CAN: voltage, current, power, per-cell internal resistance & temperature for batteries, inter-frame link current, and more.</p>
+                <h3>Network Redundancy</h3>
+                <p>Communication modules bridge CAN to IP networks. Plug in several types simultaneously for automatic failover — keeping critical infrastructure always reachable.</p>
+            </div>
+            <div class="arch-block" data-lang="zh">
+                <h3>CAN 总线协议</h3>
+                <p>系统采用<span class="highlight">CAN 总线</span>作为模块与框架之间的核心通讯协议，利用其原生多主、非破坏性仲裁和实时性优势。<strong>CAN控制器内置于主机框架</strong>，模块侧仅需配备CAN收发器和极简逻辑电路，大幅降低第三方模块的开发门槛和物料成本。框架负责总线仲裁、模块地址分配、心跳管理和策略执行。</p>
+                <h3>模块编址与多框架互联</h3>
+                <p>每个模块插入时由框架通过硬件地址引脚自动分配CAN ID，无需出厂预配置。多个主机框架可挂接在同一条CAN总线上并行工作，CAN协议原生支持多控制器共存。多框架之间可通过应用层协议实现热备、负载分担或完全分布式的冗余协作。</p>
+                <h3>分布式看门狗体系</h3>
+                <p>看门狗功能不再局限于框架本地，而是设计为可分级的服务，用户可根据场景按需配置：</p>
+                <ul>
+                    <li><strong>硬件级（模块自保）：</strong>每个模块出厂内置纯硬件过流/过温保护，不依赖任何外部信号，作为最终安全兜底。</li>
+                    <li><strong>链路级（框架直连）：</strong>框架对插槽上的模块发送周期性心跳帧，模块超时未收到则执行预设安全动作。</li>
+                    <li><strong>服务级（可编程远程看门狗）：</strong>用户通过通信模块，由服务器下发自定义看门狗策略——设定超时时长、重试次数和触发动作。适用于异地设备托管等远程运维场景。</li>
+                    <li><strong>冗余交叉喂狗：</strong>系统可同时部署多个通信模块（蜂窝网、Wi‑Fi、以太网、LoRa），每个模块独立维护看门狗心跳。多条网络路径互为备份，极端场景下配置多个看门狗源相互监督，需多方同时判定失效才执行最终动作，防止单一误判导致误断电。</li>
+                </ul>
+                <h3>全模块可观测</h3>
+                <p>所有模块通过CAN总线实时上报工作参数：电压、电流、功率，电池每节电芯内阻与温度，串接模块承载电流等。</p>
+                <h3>网络接入与冗余</h3>
+                <p>通信模块负责将CAN总线数据桥接至外部网络，支持远程管理。系统鼓励同时插入多个不同类型的通信模块互为备份，一个网络中断时自动切换，保障关键基础设施的持续受控。</p>
+            </div>
+        </section>
+
+        <!-- Recruitment -->
+        <section>
+            <div class="recruit-card">
+                <h2 data-lang="en" class="active">Founding Team Recruitment</h2>
+                <h2 data-lang="zh">创始团队招募</h2>
+                <p data-lang="en" class="active">We're looking for passionate volunteers to shape the open‑source power standard of the future. This is a <strong>purely pro‑bono, community‑driven</strong> effort. If our vision resonates, join us.</p>
+                <p data-lang="zh">我们正在寻找有热情的志愿者，共同塑造未来的开源电源标准。这是一项<strong>纯公益、社区驱动</strong>的事业。如果这个愿景与您共鸣，请加入我们。</p>
+                <div class="roles">
+                    <span class="role-tag">⚡ Power Electronics</span>
+                    <span class="role-tag">🔌 Electrical Design</span>
+                    <span class="role-tag">📡 Communication Protocols</span>
+                    <span class="role-tag">🏠 Smart Home Experience</span>
+                    <span class="role-tag">🛠 Embedded Systems</span>
+                    <span class="role-tag">📐 Mechanical / Enclosure</span>
+                </div>
+                <div data-lang="en" class="active">
+                    <p>Send your resume / portfolio, or just share your ideas and critique. Contributors who bring significant insights may be invited to the founding team.</p>
+                </div>
+                <div data-lang="zh">
+                    <p>请将简历/作品集，或任何想法与建议发送给我们。提出重要意见的贡献者将被邀请加入创始团队。</p>
+                </div>
+                <a id="contact-email" href="#" class="email-link" onclick="return false;">📧 <span id="email-display"></span></a>
+                <div class="note" data-lang="en" class="active">(Replace [at] with @ — we protect against spam bots.)</div>
+                <div class="note" data-lang="zh">（请将 [at] 替换为 @ — 我们以此防范垃圾邮件机器人。）</div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 NeonUPS Project. Open source under MIT license. <a href="https://github.com/neon9809/NeonUPS" target="_blank">GitHub</a> · <a href="https://neon-ups.org">neon-ups.org</a></p>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            // Language management
+            const LANG_STORAGE_KEY = 'neonups_lang_pref';
+            const DEFAULT_LANG = 'en';
+
+            function getBrowserLang() {
+                const navLang = navigator.language || navigator.userLanguage || '';
+                return navLang.startsWith('zh') ? 'zh' : 'en';
+            }
+
+            function getInitialLang() {
+                // check URL param ?lang=
+                const urlParams = new URLSearchParams(window.location.search);
+                const paramLang = urlParams.get('lang');
+                if (paramLang === 'zh' || paramLang === 'en') return paramLang;
+                // check localStorage
+                try {
+                    const stored = localStorage.getItem(LANG_STORAGE_KEY);
+                    if (stored === 'zh' || stored === 'en') return stored;
+                } catch(e) {}
+                return getBrowserLang();
+            }
+
+            function setLang(lang) {
+                // Update all elements with data-lang attribute
+                document.querySelectorAll('[data-lang]').forEach(el => {
+                    if (el.getAttribute('data-lang') === lang) {
+                        el.classList.add('active');
+                    } else {
+                        el.classList.remove('active');
+                    }
+                });
+                // Update lang buttons
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    const btnLang = btn.getAttribute('data-lang-code');
+                    if (btnLang === lang) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                // set html lang attribute
+                document.documentElement.lang = lang;
+                // store preference
+                try {
+                    localStorage.setItem(LANG_STORAGE_KEY, lang);
+                } catch(e) {}
+                // Update URL without reload
+                const url = new URL(window.location);
+                url.searchParams.set('lang', lang);
+                window.history.replaceState({}, '', url);
+            }
+
+            // Email anti-spam
+            function setupEmail() {
+                const user = 'hello';
+                const domain = 'neon-ups.org';
+                const email = user + '@' + domain;
+                const displayEl = document.getElementById('email-display');
+                const linkEl = document.getElementById('contact-email');
+                if (displayEl && linkEl) {
+                    // Show obfuscated initially, but JS sets the real one
+                    displayEl.textContent = email;
+                    linkEl.href = 'mailto:' + email;
+                    linkEl.onclick = function(e) {
+                        // Allow normal mailto
+                        window.location.href = 'mailto:' + email;
+                    };
+                }
+            }
+
+            const initialLang = getInitialLang();
+            setLang(initialLang);
+            setupEmail();
+
+            // Language switch buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang-code');
+                    if (lang) setLang(lang);
+                });
+            });
+
+            // If no JS, both languages visible (default CSS hides all, then we show active). 
+            // For no-js fallback we need to ensure at least one language visible. 
+            // The CSS hides all [data-lang] by default; we add noscript style?
+            // Better: set a fallback with <noscript> or default show en. We'll handle by adding a style for noscript.
+        })();
+    </script>
+    <noscript>
+        <style>
+            /* Fallback: display English by default when JS disabled */
+            [data-lang]:not([data-lang="en"]) {
+                display: none !important;
+            }
+            [data-lang="en"] {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+</body>
+</html>
