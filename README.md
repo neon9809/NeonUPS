@@ -1,6 +1,8 @@
 # NeonUPS
 ## Open-Source Universal Modular Power Management System
 
+[![中文文档](https://img.shields.io/badge/文档-中文-brightgreen?style=for-the-badge&logo=read-the-docs)](docs/README_zh-CN.md)
+
 ## 1. Background and Problem
 
 Today, DC power supply in daily life is extremely fragmented. Every device comes with its own dedicated adapter, leading to cluttered power strips, messy cables, energy waste, and an inability to implement centralized management or ride-through during power outages. When a device is replaced, its power supply is often discarded entirely. The spread of smart homes has only magnified this pain point—curtain motors, sensors, and lights each trail their own independent power supply, turning wiring, maintenance, and emergency backup into constant headaches.
