@@ -1,0 +1,257 @@
+{
+  "meta": {
+    "title": "NeonUPS — 开源通用模块化电源管理",
+    "description": "NeonUPS - 开源通用模块化电源管理系统。为家庭、创客和远程基础设施构建模块化、智能、可持续的直流供电系统。",
+    "ogTitle": "NeonUPS - 开源通用模块化电源管理",
+    "ogDescription": "基于36V直流总线和CAN通信的高度模块化、开源智能电源管理系统。"
+  },
+
+  "langSwitch": {
+    "en": "EN",
+    "zh": "中文"
+  },
+
+  "indicator": {
+    "navTitle": "目录导航",
+    "hero": "首屏",
+    "background": "背景",
+    "philosophy": "理念",
+    "scenarios": "场景",
+    "physArch": "物理电气架构",
+    "connector": "连接器",
+    "formFactors": "模块形态",
+    "safety": "安全保护",
+    "ecoBridge": "生态桥接",
+    "commArch": "通讯架构",
+    "canBus": "CAN总线",
+    "collabModes": "协作模式",
+    "watchdog": "看门狗",
+    "observability": "可观测",
+    "redundancy": "网络冗余",
+    "recruit": "招募"
+  },
+
+  "hero": {
+    "subtitle": "开源通用模块化电源管理系统 — 像搭乐高一样构建你的智能直流供电中心。",
+    "badges": "<span class=\"badge\">⚡ 36V 直流总线</span><span class=\"badge\">🔄 热插拔模块</span><span class=\"badge\">🧠 CAN 通讯</span><span class=\"badge\">🌐 物联网远程控制</span><span class=\"badge\">🔓 完全开源</span>",
+    "githubLink": "neon9809/NeonUPS on GitHub"
+  },
+
+  "background": {
+    "eyebrow": "背景与问题",
+    "heading": "背景与问题",
+    "content": "<p>当前，生活中的直流供电极度碎片化。每个设备配一个专属适配器，导致排插臃肿、线束杂乱、能耗浪费，且无法实现集中管理和停电续航。设备迭代时，电源部分往往只能整体淘汰。智能家居的普及更放大了这一痛点——窗帘电机、传感器、灯具各自拖着独立电源，布线、维护和应急供电都成了难题。</p>"
+  },
+
+  "philosophy": {
+    "eyebrow": "核心理念",
+    "heading": "核心理念",
+    "content": "<p>我们想构建一套<span class=\"highlight\">高度模块化、开源的智能电源管理系统</span>。它像一个供电积木平台：以可拓展的主机框架为基础，自由配置标准化的功能模块——输入、输出、电池、物联网控制等。用户根据自己的需求，像搭乐高一样组合出专属的电源中心，并可通过网络进行智能管理。</p><p><strong>最核心的两条原则：</strong></p><ul style=\"text-align:left;max-width:700px;margin:0 auto;color:var(--text-secondary);font-size:1.05rem;line-height:1.8\"><li style=\"margin-bottom:10px\"><strong style=\"color:#f0f4ff\">基于可持续理念的开源：</strong>通信协议、规范文档全部开放，任何人都能制造兼容模块，避免设备迭代浪费。</li><li><strong style=\"color:#f0f4ff\">按需的模块化：</strong>所有功能都是独立的热插拔模块，功率不够并联主机，功能不够增加模块，永不过时。</li></ul>"
+  },
+
+  "scenarios": {
+    "eyebrow": "典型场景",
+    "heading": "典型场景",
+    "cards": [
+      {
+        "heading": "🏠 家庭能源中心",
+        "content": "一个鞋盒大小的主机，同时给光猫、路由器、NAS、智能音箱、直流照明系统、窗帘、扫地机器人、安防设备集中供电，统一管理分配来自市电网、光伏、电池的多路能源。停电时内置电池无缝续电，保证网络不断。"
+      },
+      {
+        "heading": "🔧 创客工作台",
+        "content": "告别杂乱的实验电源。通过插入不同模块，快速获得多路可调电压、USB快充和电池储能，所有输出均可编程控制。"
+      },
+      {
+        "heading": "🌍 异地设备托管",
+        "content": "放在老家或机房的小型设备，通过手机远程监控每路供电状态，异常时远程断电或切换供电。"
+      }
+    ]
+  },
+
+  "physArch": {
+    "eyebrow": "硬件设计",
+    "heading": "物理电气架构",
+
+    "busTopo": {
+      "label": "36V 直流总线拓扑",
+      "caption": "主机框架以星型或并联拓扑互联，增加框架即可线性扩容——像服务器电源一样堆叠。",
+      "svg": {
+        "mainFrame": "MAIN FRAME",
+        "canController": "CAN Controller",
+        "busArbiter": "Bus Arbiter",
+        "frame2": "FRAME 2",
+        "standbyParallel": "Standby / Parallel",
+        "frameN": "FRAME N",
+        "expandable": "Expandable",
+        "acDcInput": "AC-DC Input",
+        "inputModule": "Input Module",
+        "battery": "Battery",
+        "storageModule": "Storage Module",
+        "multiVOutput": "Multi-V Output",
+        "outputModule": "Output Module",
+        "iotComms": "IoT / Comms",
+        "commModule": "Comm Module",
+        "panel86": "86-Panel",
+        "remote": "Remote",
+        "wallModule": "Wall Module",
+        "viaWallWiring": "via wall wiring",
+        "selvSafe": "SELV < 60V ✓ Safe"
+      }
+    },
+
+    "connector": {
+      "heading": "连接器规范",
+      "cards": [
+        {
+          "heading": "电源进出",
+          "content": "5.5mm DC接口，输入公头、输出母座，物理区分防止热插拔误接。",
+          "tag": "8A / 端口 · 高功率双端口"
+        },
+        {
+          "heading": "通讯总线",
+          "content": "RJ45（8P8C）接口承载CAN差分信号，削除锁止舌实现无工具快拔。",
+          "tag": "⚠ 非以太网 — 仅用于CAN通讯"
+        },
+        {
+          "heading": "模块-框架接口",
+          "content": "每个插槽同时提供电源触点和CAN信号触点，支持热插拔。关键模块需通过软件\u201c申请移除\u201d后方可拔出。",
+          "tag": "支持热插拔 · 软件锁"
+        }
+      ]
+    },
+
+    "modules": {
+      "heading": "模块形态",
+      "local": {
+        "heading": "本地模块",
+        "content": "直接插入主机框架的标准槽位，包括输入模块（AC-DC、光伏MPPT）、输出模块（多路可调电压、USB PD）、电池模块、通信模块等。"
+      },
+      "remote": {
+        "heading": "Remote 模块（86面板）",
+        "content": "标准86面板形态，安装于墙壁终端，通过墙内36V直流母线与主机框架相连。例如Type-C PD面板直接嵌入床头，既为设备快充，又省去传统电源适配器。"
+      }
+    },
+
+    "safety": {
+      "heading": "多级硬件安全保护",
+      "layers": [
+        {
+          "heading": "模块级保护",
+          "content": "每个模块自带过流、过温、短路保护，不依赖任何外部信号。"
+        },
+        {
+          "heading": "框架互联电流限制",
+          "content": "串接模块实时监测框架间线路电流，设有硬件电流上限。"
+        },
+        {
+          "heading": "CO₂ 应急灭火模块",
+          "content": "采用缓慢释放机制，通过微型电磁阀控制气瓶。同时检测到高温阈值和烟雾颗粒才判定火灾风险，避免误触发。模块内置超级电容备用电源，确保主电源切断后仍能完成阀门开启。"
+        }
+      ]
+    },
+
+    "eco": {
+      "heading": "生态桥接",
+      "atx": {
+        "heading": "ATX 电源转换模块",
+        "content": "利用海量ATX电源为系统提供稳定大功率来源。"
+      },
+      "server": {
+        "heading": "服务器电源转换模块",
+        "content": "适配二手市场存量庞大的服务器可插拔电源模块，拉低系统供电成本。"
+      }
+    }
+  },
+
+  "commArch": {
+    "eyebrow": "软件与协议",
+    "heading": "通讯架构",
+
+    "canBus": {
+      "label": "CAN 总线工作原理",
+      "caption": "CAN控制器内置于主机框架，模块侧仅需收发器芯片。模块插入时自动分配CAN ID，无需出厂预配置。"
+    },
+
+    "modes": {
+      "heading": "多框架协作模式",
+      "hint": "点击查看各冗余协作策略",
+      "tabs": {
+        "hotStandby": "热备模式",
+        "loadSharing": "负载分担",
+        "fullyDistributed": "完全分布式"
+      },
+      "hotStandby": {
+        "desc": "一台框架作为主控制器发送指令，另一台监听。主框架心跳丢失时，备机自动接管，无需人工干预。",
+        "svgFailover": "如心跳丢失 → 备机自动接管"
+      },
+      "loadSharing": {
+        "desc": "各框架分别管理各自的模块群，互不干扰。适合分区部署场景，不同区域独立控制。"
+      },
+      "fullyDistributed": {
+        "desc": "所有框架均可发出控制指令，模块按地址响应。适合复杂分布式部署，灵活性最高。"
+      }
+    },
+
+    "watchdog": {
+      "heading": "分布式看门狗体系",
+      "hint": "四级保护体系——从硬件到云端，每一层独立守护系统安全",
+      "tiers": [
+        {
+          "badge": "第一级 · 硬件级",
+          "heading": "模块自保",
+          "content": "每个模块出厂内置纯硬件过流/过温保护，不依赖任何外部信号。即使总线断开，此级保护依然有效——是系统的最终安全兜底。"
+        },
+        {
+          "badge": "第二级 · 链路级",
+          "heading": "框架直连心跳",
+          "content": "框架对插槽上的模块发送周期性心跳帧，模块超时未收到则执行预设安全动作。这是本地最快的软件级保护。"
+        },
+        {
+          "badge": "第三级 · 服务级",
+          "heading": "可编程远程看门狗",
+          "content": "用户通过通信模块，由服务器下发自定义看门狗策略——设定超时时长、重试次数和触发动作（重启、断电、切换供电）。适用于异地设备托管等远程运维场景。"
+        },
+        {
+          "badge": "第四级 · 冗余交叉喂狗",
+          "heading": "多路径共识保护",
+          "content": "系统可同时部署多个通信模块（蜂窝网、Wi-Fi、以太网、LoRa），每个模块独立维护看门狗心跳。单条链路中断不影响看门狗存活。极端场景下可配置多个看门狗源相互监督，需多方同时判定失效才执行最终动作，防止单一误判导致误断电。"
+        }
+      ]
+    },
+
+    "observability": {
+      "heading": "全模块可观测",
+      "cards": [
+        {
+          "heading": "输入 / 输出模块",
+          "metrics": "<span class=\"obs-metric\">电压</span><span class=\"obs-metric\">电流</span><span class=\"obs-metric\">功率</span><span class=\"obs-metric\">开关状态</span>"
+        },
+        {
+          "heading": "电池模块",
+          "metrics": "<span class=\"obs-metric\">电池组电压</span><span class=\"obs-metric\">电芯内阻</span><span class=\"obs-metric\">温度</span><span class=\"obs-metric\">健康状态</span>"
+        },
+        {
+          "heading": "串接模块",
+          "metrics": "<span class=\"obs-metric\">链路电流</span><span class=\"obs-metric\">负载感知</span>"
+        }
+      ]
+    },
+
+    "network": {
+      "heading": "网络接入与冗余",
+      "caption": "同时插入多个不同类型的通信模块互为备份，一个网络中断时自动切换，保障关键基础设施的持续受控。"
+    }
+  },
+
+  "recruit": {
+    "heading": "创始团队招募",
+    "content": "我们正在寻找有热情的志愿者、组织或公司，共同塑造未来的开源电源标准。这是一项<strong>纯公益、社区驱动</strong>的事业。如果这个愿景与您共鸣，请加入我们。",
+    "roles": "<span class=\"role-tag\">⚡ 电力电子</span><span class=\"role-tag\">🔌 电气设计</span><span class=\"role-tag\">📡 通讯协议</span><span class=\"role-tag\">🏠 智能家居</span><span class=\"role-tag\">🛠 嵌入式系统</span><span class=\"role-tag\">📐 机械结构</span>",
+    "callToAction": "<p>请将简历/作品集，或任何想法与建议发送给我们。提出重要意见的贡献者将被邀请加入创始团队。</p>",
+    "note": "（悬停或点击时显示真实邮箱 — 已启用防垃圾邮件保护）"
+  },
+
+  "footer": {
+    "text": "© 2026 NeonUPS 项目. 基于 MIT 许可证开源. <a href=\"https://github.com/neon9809/NeonUPS\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a> · <a href=\"https://neon-ups.org\">neon-ups.org</a>"
+  }
+}

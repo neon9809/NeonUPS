@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="NeonUPS - Open Source Universal Modular Power Management System. Build a modular, intelligent, and sustainable DC power system for home, makers, and remote infrastructure.">
+    <meta name="description" data-i18n-attr="content" data-i18n="meta.description" content="NeonUPS - Open Source Universal Modular Power Management System. Build a modular, intelligent, and sustainable DC power system for home, makers, and remote infrastructure.">
     <meta name="keywords" content="NeonUPS, open source power management, modular power system, 36V DC bus, CAN bus, IoT power distribution, home energy center, maker power supply, remote power control, DC microgrid">
     <meta name="author" content="NeonUPS Project">
-    <meta property="og:title" content="NeonUPS - Open Source Universal Modular Power Management">
-    <meta property="og:description" content="A highly modular, open-source intelligent power management system based on 36V DC bus and CAN communication.">
+    <meta property="og:title" data-i18n-attr="content" data-i18n="meta.ogTitle" content="NeonUPS - Open Source Universal Modular Power Management">
+    <meta property="og:description" data-i18n-attr="content" data-i18n="meta.ogDescription" content="A highly modular, open-source intelligent power management system based on 36V DC bus and CAN communication.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://neon-ups.org">
-    <title>NeonUPS — Open Source Universal Modular Power Management</title>
+    <title data-i18n="meta.title">NeonUPS — Open Source Universal Modular Power Management</title>
     <link rel="canonical" href="https://neon-ups.org">
     <link rel="alternate" hreflang="en" href="https://neon-ups.org?lang=en">
     <link rel="alternate" hreflang="zh" href="https://neon-ups.org?lang=zh">
@@ -32,25 +32,90 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* ── Loading Screen ── */
+        /* ── Terminal Boot Loader ── */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg); display: flex; align-items: center;
+            background: #0c0d0f; display: flex; align-items: center;
             justify-content: center; z-index: 9999;
-            transition: opacity 0.5s, visibility 0.5s;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            font-family: var(--font-mono);
         }
-        #loader.hidden { opacity: 0; visibility: hidden; }
-        .loader-circle {
-            width: 60px; height: 60px; border: 3px solid var(--border);
-            border-top-color: var(--accent); border-radius: 50%;
-            animation: spin 1s linear infinite; margin: 0 auto 20px;
+        #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .terminal {
+            width: min(900px, 94vw); max-height: 94vh; overflow-y: auto;
+            background: #0c0d0f; border: 1px solid #2a2e38; border-radius: 10px;
+            padding: 0; position: relative;
+            box-shadow: 0 0 60px rgba(0,229,255,0.08), 0 0 120px rgba(0,0,0,0.8);
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .loader-text {
-            color: var(--accent); font-size: 1.1rem; font-weight: 600;
-            animation: pulse 1.5s ease-in-out infinite; text-align: center;
+        .terminal-titlebar {
+            position: sticky; top: 0; z-index: 3;
+            display: flex; align-items: center; justify-content: center;
+            height: 38px; padding: 0 16px;
+            background: rgba(20, 23, 28, 0.95);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid #2a2e38;
+            border-radius: 10px 10px 0 0;
         }
-        @keyframes pulse { 0%,100%{opacity:.5} 50%{opacity:1} }
+        .terminal-dots {
+            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+            display: flex; gap: 8px;
+        }
+        .terminal-dot {
+            width: 14px; height: 14px; border-radius: 50%; cursor: pointer;
+            transition: transform .2s, box-shadow .2s; border: none;
+            position: relative;
+        }
+        .terminal-dot:hover { transform: scale(1.25); }
+        .terminal-dot.close { background: #ff5f57; }
+        .terminal-dot.close:hover { box-shadow: 0 0 8px rgba(255,95,87,.6); }
+        .terminal-dot.close::after {
+            content: '×'; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%,-50%); font-size: 9px; font-weight: 700;
+            color: #4a0000; line-height: 1; opacity: 0; transition: opacity .2s;
+        }
+        .terminal-dot.close:hover::after { opacity: 1; }
+        .terminal-dot.minimize { background: #ffbd2e; }
+        .terminal-dot.minimize:hover { box-shadow: 0 0 8px rgba(255,189,46,.6); }
+        .terminal-dot.maximize { background: #27c93f; }
+        .terminal-dot.maximize:hover { box-shadow: 0 0 8px rgba(39,201,63,.6); }
+        .terminal-title {
+            font-size: 12px; font-weight: 600; color: #9aa0b0;
+            font-family: var(--font-sans); user-select: none;
+        }
+        .terminal-body {
+            padding: 20px 28px 28px;
+        }
+        .terminal-content {
+            color: #b0b8c0; font-size: 13px; line-height: 1.55;
+            white-space: pre-wrap; word-break: break-all;
+            font-family: var(--font-mono);
+        }
+        .terminal-content .cyan { color: #00e5ff; }
+        .terminal-content .green { color: #4cff4c; }
+        .terminal-content .yellow { color: #ffd740; }
+        .terminal-content .red { color: #ff6e6e; }
+        .terminal-content .dim { color: #6a7080; }
+        .terminal-content .white { color: #f0f0f0; }
+        .terminal-content .bold { font-weight: 700; }
+        .terminal-cursor {
+            display: inline-block; background: #00e5ff;
+            width: 8px; height: 15px; vertical-align: text-bottom;
+            animation: cursorBlink 1s step-end infinite;
+        }
+        @keyframes cursorBlink {
+            0%,100% { opacity: 1; } 50% { opacity: 0; }
+        }
+        .terminal-footer {
+            margin-top: 16px; padding-top: 12px;
+            border-top: 1px solid #2a2e38;
+            color: #6a7080; font-size: 12px;
+            text-align: center; font-family: var(--font-sans);
+        }
+        .terminal-footer kbd {
+            display: inline-block; padding: 2px 8px; border-radius: 4px;
+            border: 1px solid #4a5060; background: #1a1d24;
+            color: #c0c8d0; font-family: var(--font-mono); font-size: 11px;
+        }
 
         body {
             background: var(--bg); color: var(--text);
@@ -119,29 +184,105 @@
         section {
             min-height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            scroll-snap-align: start; scroll-snap-stop: always;
+            scroll-snap-align: start;
             position: relative; padding: 100px 24px;
         }
         section .container { max-width: var(--max-width); width: 100%; margin: 0 auto; }
 
-        /* ── Progress / Dots ── */
+        /* ── Progress Bar ── */
         .progress-bar {
             position: fixed; top: 0; left: 0; height: 3px;
             background: linear-gradient(90deg, var(--accent), var(--accent2));
             z-index: 100; transition: width .3s;
         }
-        .scroll-indicator {
-            position: fixed; right: 30px; top: 50%; transform: translateY(-50%);
-            display: flex; flex-direction: column; gap: 12px; z-index: 100;
+
+        /* ═══════════════════════════════════════
+           Scroll Indicator — Sidebar Style
+        ═══════════════════════════════════════ */
+        .sidebar-outer {
+            position: fixed; right: 20px; top: 0; height: 100vh; z-index: 999;
+            display: flex; justify-content: flex-end; align-items: center;
+            width: 24px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
         }
-        .scroll-dot {
-            width: 10px; height: 10px; border-radius: 50%;
-            background: rgba(255,255,255,.2); cursor: pointer; transition: all .3s;
+        .sidebar-outer:hover { width: 284px; }
+
+        .sidebar-panel {
+            width: 260px; height: 70vh;
+            background: rgba(20, 23, 28, 0.95);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            box-shadow: -4px 0 24px rgba(0,0,0,0.5);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 24px 20px 24px 24px; flex-shrink: 0;
+            display: flex; flex-direction: column;
+            transform: translateX(20px); opacity: 0;
+            transition: transform 0.35s cubic-bezier(.4,0,.2,1), opacity 0.3s ease;
         }
-        .scroll-dot.active {
-            background: var(--accent); box-shadow: 0 0 10px var(--accent); transform: scale(1.3);
+        .sidebar-outer:hover .sidebar-panel { transform: translateX(0); opacity: 1; }
+
+        .sidebar-trigger {
+            width: 6px; height: 80px;
+            background: rgba(42, 46, 56, 0.6);
+            border-radius: 4px; position: relative; flex-shrink: 0;
+            transition: all 0.3s ease; cursor: pointer;
         }
-        .scroll-dot:hover { background: var(--accent); transform: scale(1.2); }
+        .sidebar-outer:hover .sidebar-trigger { background: rgba(0, 229, 255, 0.3); }
+
+        .indicator-dot {
+            position: absolute; right: 1px; width: 4px; height: 12px;
+            background: var(--accent); border-radius: 2px;
+            transition: top 0.3s ease;
+            box-shadow: 0 0 6px rgba(0,229,255,.5);
+        }
+
+        .sidebar-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+        .sidebar-title { font-size: 15px; font-weight: 700; color: var(--text); }
+
+        .toc-menu { list-style: none; flex: 1; overflow-y: auto; margin: 0; padding: 0; }
+        .toc-item-level1 { margin-bottom: 6px; }
+
+        .toc-link-level1 {
+            display: flex; align-items: center; padding: 9px 12px; border-radius: 8px;
+            color: var(--text-secondary); text-decoration: none; font-weight: 600; font-size: 13px;
+            transition: all 0.2s ease; position: relative; cursor: pointer;
+        }
+        .toc-link-level1::before {
+            content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+            width: 3px; height: 0; background: var(--accent); border-radius: 2px;
+            transition: height 0.3s ease;
+        }
+        .toc-item-level1.active > .toc-link-level1 {
+            background: rgba(0,229,255,0.1); color: var(--accent);
+        }
+        .toc-item-level1.active > .toc-link-level1::before { height: 20px; }
+
+        .toc-submenu {
+            list-style: none; margin: 0; padding: 0;
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.35s ease;
+        }
+        .toc-item-level1.active > .toc-submenu { max-height: 500px; }
+
+        .toc-link-level2 {
+            display: block; padding: 7px 12px 7px 24px; color: var(--text-secondary);
+            text-decoration: none; font-size: 12px;
+            border-left: 1px solid var(--border); margin-left: 18px;
+            transition: all 0.2s ease; cursor: pointer;
+        }
+        .toc-item-level2.active > .toc-link-level2 {
+            color: var(--accent2); border-left-color: var(--accent2);
+            font-weight: 600; background: rgba(213,0,249,0.08); border-radius: 0 6px 6px 0;
+        }
+        .toc-link-level1:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+        .toc-link-level2:hover { color: var(--accent2); }
+
+        @media(max-width:768px) { .sidebar-outer { display: none; } }
 
         /* ── Scroll reveal ── */
         .scroll-reveal { opacity: 0; transform: translateY(40px); transition: opacity .8s cubic-bezier(.4,0,.2,1), transform .8s cubic-bezier(.4,0,.2,1); }
@@ -236,24 +377,6 @@
         .card h3 { margin-top: 0; margin-bottom: 16px; font-size: clamp(1.3rem,2.5vw,1.6rem); transition: transform .3s; }
         .card:hover h3 { transform: translateX(5px); color: var(--accent); }
         .card p { color: var(--text-secondary); font-size: 1rem; line-height: 1.7; margin: 0; }
-
-        /* ── Language ── */
-        [data-lang] { display: none; }
-        [data-lang].active { display: block; }
-        span[data-lang].active, a[data-lang].active, li[data-lang].active { display: inline; }
-        div[data-lang].active, section[data-lang].active, p[data-lang].active, h2[data-lang].active, h3[data-lang].active { display: block; }
-
-        /* ── Voltage meter ── */
-        #voltage-meter {
-            position: fixed; bottom: 20px; right: 20px;
-            background: rgba(20,23,28,.9); border: 1px solid var(--accent);
-            border-radius: 10px; padding: 10px 15px; font-family: var(--font-mono);
-            font-size: 12px; color: var(--accent); z-index: 1000;
-            box-shadow: 0 0 20px rgba(0,229,255,.3);
-        }
-        #voltage-meter .vm-bar-bg { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 5px; }
-        #voltage-meter .vm-bar { height: 100%; width: 85%; background: linear-gradient(90deg, var(--accent), var(--accent2)); animation: powerBar 2s ease-in-out infinite; }
-        @keyframes powerBar { 0%,100%{width:85%} 50%{width:95%} }
 
         /* ═══════════════════════════════════════════
            PHYSICAL ARCHITECTURE SECTION
@@ -480,7 +603,8 @@
         .note { font-size: .85rem; color: var(--text-secondary); margin-top: 18px; }
 
         /* ── Footer ── */
-        footer { padding: 30px 0; text-align: center; color: var(--text-secondary); font-size: .9rem; border-top: 1px solid var(--border); }
+        footer { padding: 20px 0; text-align: center; color: var(--text); font-size: 12px; border-top: 1px solid var(--border); scroll-snap-align: start; min-height: 12vh; display: flex; align-items: center; justify-content: center; background: var(--bg); position: relative; z-index: 1; }
+        footer p { font-size: 12px; margin: 0 auto; }
 
         /* ── Animated pulse ring ── */
         @keyframes pulseRing {
@@ -512,14 +636,27 @@
             .watchdog-tiers::before { left: 22px; }
             .wd-tier-dot { min-width: 46px; height: 46px; font-size: 1.1rem; }
         }
+
     </style>
 </head>
 <body>
     <!-- Loader -->
     <div id="loader">
-        <div style="text-align:center">
-            <div class="loader-circle"></div>
-            <div class="loader-text">NeonUPS</div>
+        <div class="terminal">
+            <div class="terminal-titlebar">
+                <div class="terminal-dots">
+                    <button class="terminal-dot close" id="terminal-close-btn" title="Close"></button>
+                    <!-- <button class="terminal-dot minimize"></button> -->
+                    <!-- <button class="terminal-dot maximize"></button> -->
+                </div>
+                <span class="terminal-title">neon-ups — zsh</span>
+            </div>
+            <div class="terminal-body">
+            <pre class="terminal-content" id="terminal-content"></pre>
+            <div class="terminal-footer" id="terminal-footer" style="display:none">
+                Press <kbd>Enter</kbd> or click <span style="color:#ff5f57">●</span> to close
+            </div>
+            </div>
         </div>
     </div>
 
@@ -537,28 +674,59 @@
         <div class="header-inner">
             <div class="logo">NeonUPS</div>
             <div class="lang-switch" id="lang-switch">
-                <button class="lang-btn active" data-lang-code="en">EN</button>
-                <button class="lang-btn" data-lang-code="zh">中文</button>
+                <button class="lang-btn active" data-lang-code="en" data-i18n="langSwitch.en">EN</button>
+                <button class="lang-btn" data-lang-code="zh" data-i18n="langSwitch.zh">中文</button>
             </div>
         </div>
     </header>
 
     <div class="progress-bar" id="progress-bar" style="width:0%"></div>
 
-    <div class="scroll-indicator" id="scroll-indicator">
-        <div class="scroll-dot active" data-section="0"></div>
-        <div class="scroll-dot" data-section="1"></div>
-        <div class="scroll-dot" data-section="2"></div>
-        <div class="scroll-dot" data-section="3"></div>
-        <div class="scroll-dot" data-section="4"></div>
-        <div class="scroll-dot" data-section="5"></div>
-        <div class="scroll-dot" data-section="6"></div>
-    </div>
-
-    <!-- Voltage meter -->
-    <div id="voltage-meter">
-        <div>⚡ POWER: 36V DC</div>
-        <div class="vm-bar-bg"><div class="vm-bar"></div></div>
+    <div class="sidebar-outer" id="sidebarOuter">
+        <nav class="sidebar-panel">
+            <div class="sidebar-header">
+                <div class="sidebar-title" data-i18n="indicator.navTitle">Navigation</div>
+            </div>
+            <ul class="toc-menu" id="tocMenu">
+                <li class="toc-item-level1 active" data-section="0">
+                    <span class="toc-link-level1" data-i18n="indicator.hero">Hero</span>
+                </li>
+                <li class="toc-item-level1" data-section="1">
+                    <span class="toc-link-level1" data-i18n="indicator.background">Background</span>
+                </li>
+                <li class="toc-item-level1" data-section="2">
+                    <span class="toc-link-level1" data-i18n="indicator.philosophy">Philosophy</span>
+                </li>
+                <li class="toc-item-level1" data-section="3">
+                    <span class="toc-link-level1" data-i18n="indicator.scenarios">Scenarios</span>
+                </li>
+                <li class="toc-item-level1 has-sub" data-section="4">
+                    <span class="toc-link-level1" data-i18n="indicator.physArch">Phys. &amp; Elec. Arch</span>
+                    <ul class="toc-submenu">
+                        <li class="toc-item-level2" data-sub="0"><span class="toc-link-level2" data-i18n="indicator.connector">Connector</span></li>
+                        <li class="toc-item-level2" data-sub="1"><span class="toc-link-level2" data-i18n="indicator.formFactors">Form Factors</span></li>
+                        <li class="toc-item-level2" data-sub="2"><span class="toc-link-level2" data-i18n="indicator.safety">Safety</span></li>
+                        <li class="toc-item-level2" data-sub="3"><span class="toc-link-level2" data-i18n="indicator.ecoBridge">Eco Bridge</span></li>
+                    </ul>
+                </li>
+                <li class="toc-item-level1 has-sub" data-section="5">
+                    <span class="toc-link-level1" data-i18n="indicator.commArch">Comm. Arch</span>
+                    <ul class="toc-submenu">
+                        <li class="toc-item-level2" data-sub="0"><span class="toc-link-level2" data-i18n="indicator.canBus">CAN Bus</span></li>
+                        <li class="toc-item-level2" data-sub="1"><span class="toc-link-level2" data-i18n="indicator.collabModes">Collab Modes</span></li>
+                        <li class="toc-item-level2" data-sub="2"><span class="toc-link-level2" data-i18n="indicator.watchdog">Watchdog</span></li>
+                        <li class="toc-item-level2" data-sub="3"><span class="toc-link-level2" data-i18n="indicator.observability">Observability</span></li>
+                        <li class="toc-item-level2" data-sub="4"><span class="toc-link-level2" data-i18n="indicator.redundancy">Redundancy</span></li>
+                    </ul>
+                </li>
+                <li class="toc-item-level1" data-section="6">
+                    <span class="toc-link-level1" data-i18n="indicator.recruit">Recruit</span>
+                </li>
+            </ul>
+        </nav>
+        <div class="sidebar-trigger">
+            <div class="indicator-dot" id="indicatorDot"></div>
+        </div>
     </div>
 
     <div class="scroll-container" id="scroll-container">
@@ -567,33 +735,23 @@
         <!-- ══════════ HERO ══════════ -->
         <section class="hero">
             <h1>NeonUPS</h1>
-            <div data-lang="en" class="subtitle active">Open Source Universal Modular Power Management System — build your own intelligent DC power center like Lego blocks.</div>
-            <div data-lang="zh" class="subtitle">开源通用模块化电源管理系统 — 像搭乐高一样构建你的智能直流供电中心。</div>
-            <div class="badge-group">
-                <span class="badge">⚡ 36V DC Bus</span>
-                <span class="badge">🔄 Hot-Swap Modules</span>
-                <span class="badge">🧠 CAN Communication</span>
-                <span class="badge">🌐 IoT &amp; Remote Control</span>
-                <span class="badge">🔓 Fully Open Source</span>
+            <div class="subtitle" data-i18n="hero.subtitle">Open Source Universal Modular Power Management System — build your own intelligent DC power center like Lego blocks.</div>
+            <div class="badge-group" data-i18n-html="hero.badges">
+                <span class="badge">⚡ 36V DC Bus</span><span class="badge">🔄 Hot-Swap Modules</span><span class="badge">🧠 CAN Communication</span><span class="badge">🌐 IoT &amp; Remote Control</span><span class="badge">🔓 Fully Open Source</span>
             </div>
-            <a href="https://github.com/neon9809/NeonUPS" target="_blank" class="gh-link">
+            <a href="https://github.com/neon9809/NeonUPS" target="_blank" rel="noopener noreferrer" class="gh-link">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                neon9809/NeonUPS on GitHub
+                <span data-i18n="hero.githubLink">neon9809/NeonUPS on GitHub</span>
             </a>
         </section>
 
         <!-- ══════════ BACKGROUND ══════════ -->
         <section>
             <div class="section-content">
-                <span class="section-eyebrow" data-lang="en">The Problem</span>
-                <span class="section-eyebrow" data-lang="zh">背景与问题</span>
-                <h2 data-lang="en" class="active">Background &amp; Problem</h2>
-                <h2 data-lang="zh">背景与问题</h2>
-                <div data-lang="en" class="active">
+                <span class="section-eyebrow" data-i18n="background.eyebrow">The Problem</span>
+                <h2 data-i18n="background.heading">Background &amp; Problem</h2>
+                <div data-i18n-html="background.content">
                     <p>DC power in our daily life is extremely fragmented. Every device comes with its own adapter, leading to bloated power strips, tangled cables, wasted energy, and no way to achieve centralized management or battery-backed uptime. When upgrading devices, the entire power supply chain is often discarded. The rise of smart homes magnifies this pain — curtain motors, sensors, and lights each drag independent power bricks, making wiring, maintenance and emergency power a constant headache.</p>
-                </div>
-                <div data-lang="zh">
-                    <p>当前，生活中的直流供电极度碎片化。每个设备配一个专属适配器，导致排插臃肿、线束杂乱、能耗浪费，且无法实现集中管理和停电续航。设备迭代时，电源部分往往只能整体淘汰。智能家居的普及更放大了这一痛点——窗帘电机、传感器、灯具各自拖着独立电源，布线、维护和应急供电都成了难题。</p>
                 </div>
             </div>
         </section>
@@ -601,24 +759,14 @@
         <!-- ══════════ CORE PHILOSOPHY ══════════ -->
         <section>
             <div class="section-content">
-                <span class="section-eyebrow" data-lang="en">Our Vision</span>
-                <span class="section-eyebrow" data-lang="zh">核心理念</span>
-                <h2 data-lang="en" class="active">Core Philosophy</h2>
-                <h2 data-lang="zh">核心理念</h2>
-                <div data-lang="en" class="active">
+                <span class="section-eyebrow" data-i18n="philosophy.eyebrow">Our Vision</span>
+                <h2 data-i18n="philosophy.heading">Core Philosophy</h2>
+                <div data-i18n-html="philosophy.content">
                     <p>We envision a <span class="highlight">highly modular, open-source intelligent power management system</span>. It's a power building-block platform: a basic host frame with expandable slots accepts standardized functional modules — input, output, battery, IoT control, etc. Users assemble their own power center like Lego, tailored to their needs, with intelligent network management.</p>
                     <p><strong>Two fundamental principles:</strong></p>
                     <ul style="text-align:left;max-width:700px;margin:0 auto;color:var(--text-secondary);font-size:1.05rem;line-height:1.8">
                         <li style="margin-bottom:10px"><strong style="color:#f0f4ff">Sustainability through Open Source:</strong> Communication protocols and specifications are fully open. Anyone can manufacture compatible modules, preventing iterative device waste.</li>
                         <li><strong style="color:#f0f4ff">On-demand Modularity:</strong> Every function is an independent hot-swap module. Need more power? Parallel host frames. Need more features? Add modules. Never obsolete.</li>
-                    </ul>
-                </div>
-                <div data-lang="zh">
-                    <p>我们想构建一套<span class="highlight">高度模块化、开源的智能电源管理系统</span>。它像一个供电积木平台：以可拓展的主机框架为基础，自由配置标准化的功能模块——输入、输出、电池、物联网控制等。用户根据自己的需求，像搭乐高一样组合出专属的电源中心，并可通过网络进行智能管理。</p>
-                    <p><strong>最核心的两条原则：</strong></p>
-                    <ul style="text-align:left;max-width:700px;margin:0 auto;color:var(--text-secondary);font-size:1.05rem;line-height:1.8">
-                        <li style="margin-bottom:10px"><strong style="color:#f0f4ff">基于可持续理念的开源：</strong>通信协议、规范文档全部开放，任何人都能制造兼容模块，避免设备迭代浪费。</li>
-                        <li><strong style="color:#f0f4ff">按需的模块化：</strong>所有功能都是独立的热插拔模块，功率不够并联主机，功能不够增加模块，永不过时。</li>
                     </ul>
                 </div>
             </div>
@@ -627,28 +775,20 @@
         <!-- ══════════ SCENARIOS ══════════ -->
         <section class="scroll-reveal">
             <div class="container">
-                <span class="section-eyebrow" data-lang="en" style="display:block;text-align:center">Use Cases</span>
-                <span class="section-eyebrow" data-lang="zh" style="display:block;text-align:center">典型场景</span>
-                <h2 data-lang="en" class="active" style="text-align:center">Typical Scenarios</h2>
-                <h2 data-lang="zh" style="text-align:center">典型场景</h2>
+                <span class="section-eyebrow" data-i18n="scenarios.eyebrow" style="text-align:center">Use Cases</span>
+                <h2 data-i18n="scenarios.heading" style="text-align:center">Typical Scenarios</h2>
                 <div class="card-grid" style="margin:50px auto 0;justify-items:center">
                     <div class="card scroll-reveal stagger-1">
-                        <h3 data-lang="en" class="active">🏠 Home Energy Center</h3>
-                        <h3 data-lang="zh">🏠 家庭能源中心</h3>
-                        <p data-lang="en" class="active">A shoebox-sized host powers your fiber modem, router, NAS, smart speakers, DC lighting, curtains, robot vacuum, and security gear — all from one place, intelligently distributing energy from grid, solar, and battery. Seamless battery backup during outages keeps the network alive.</p>
-                        <p data-lang="zh">一个鞋盒大小的主机，同时给光猫、路由器、NAS、智能音箱、直流照明系统、窗帘、扫地机器人、安防设备集中供电，统一管理分配来自市电网、光伏、电池的多路能源。停电时内置电池无缝续电，保证网络不断。</p>
+                        <h3 data-i18n="scenarios.cards.0.heading">🏠 Home Energy Center</h3>
+                        <p data-i18n="scenarios.cards.0.content">A shoebox-sized host powers your fiber modem, router, NAS, smart speakers, DC lighting, curtains, robot vacuum, and security gear — all from one place, intelligently distributing energy from grid, solar, and battery. Seamless battery backup during outages keeps the network alive.</p>
                     </div>
                     <div class="card scroll-reveal stagger-2">
-                        <h3 data-lang="en" class="active">🔧 Maker Workbench</h3>
-                        <h3 data-lang="zh">🔧 创客工作台</h3>
-                        <p data-lang="en" class="active">Say goodbye to messy bench supplies. Insert different modules for multiple adjustable voltages, USB fast charging, and battery storage — all outputs programmable.</p>
-                        <p data-lang="zh">告别杂乱的实验电源。通过插入不同模块，快速获得多路可调电压、USB快充和电池储能，所有输出均可编程控制。</p>
+                        <h3 data-i18n="scenarios.cards.1.heading">🔧 Maker Workbench</h3>
+                        <p data-i18n="scenarios.cards.1.content">Say goodbye to messy bench supplies. Insert different modules for multiple adjustable voltages, USB fast charging, and battery storage — all outputs programmable.</p>
                     </div>
                     <div class="card scroll-reveal stagger-3">
-                        <h3 data-lang="en" class="active">🌍 Remote Device Hosting</h3>
-                        <h3 data-lang="zh">🌍 异地设备托管</h3>
-                        <p data-lang="en" class="active">Monitor and control every power channel for equipment in a remote hometown or server room via smartphone. Remotely reboot or switch power on anomaly.</p>
-                        <p data-lang="zh">放在老家或机房的小型设备，通过手机远程监控每路供电状态，异常时远程断电或切换供电。</p>
+                        <h3 data-i18n="scenarios.cards.2.heading">🌍 Remote Device Hosting</h3>
+                        <p data-i18n="scenarios.cards.2.content">Monitor and control every power channel for equipment in a remote hometown or server room via smartphone. Remotely reboot or switch power on anomaly.</p>
                     </div>
                 </div>
             </div>
@@ -657,15 +797,12 @@
         <!-- ══════════ PHYSICAL & ELECTRICAL ARCHITECTURE ══════════ -->
         <section class="phys-section scroll-reveal">
             <div class="container">
-                <span class="section-eyebrow" data-lang="en" style="display:block;text-align:center">Hardware Design</span>
-                <span class="section-eyebrow" data-lang="zh" style="display:block;text-align:center">硬件设计</span>
-                <h2 data-lang="en" class="active" style="text-align:center">Physical &amp; Electrical Architecture</h2>
-                <h2 data-lang="zh" style="text-align:center">物理电气架构</h2>
+                <span class="section-eyebrow" data-i18n="physArch.eyebrow" style="text-align:center">Hardware Design</span>
+                <h2 data-i18n="physArch.heading" style="text-align:center">Physical &amp; Electrical Architecture</h2>
 
                 <!-- ── 36V Bus Topology Diagram ── -->
                 <div class="bus-diagram-wrap scroll-reveal">
-                    <div class="section-label" data-lang="en">36V DC Bus Topology</div>
-                    <div class="section-label" data-lang="zh">36V 直流总线拓扑</div>
+                    <div class="section-label" data-i18n="physArch.busTopo.label">36V DC Bus Topology</div>
                     <svg class="bus-svg" viewBox="0 0 760 320" fill="none" xmlns="http://www.w3.org/2000/svg" id="bus-topo-svg">
                         <!-- Central bus bar -->
                         <rect x="180" y="148" width="400" height="24" rx="12" fill="url(#busGrad)" opacity=".9"/>
@@ -674,23 +811,23 @@
 
                         <!-- Main frame (center) -->
                         <rect x="310" y="60" width="140" height="80" rx="12" fill="rgba(0,229,255,0.12)" stroke="rgba(0,229,255,0.6)" stroke-width="2"/>
-                        <text x="380" y="93" text-anchor="middle" fill="#00e5ff" font-size="11" font-weight="700" font-family="sans-serif">MAIN FRAME</text>
-                        <text x="380" y="110" text-anchor="middle" fill="#9aa0b0" font-size="9" font-family="sans-serif">CAN Controller</text>
-                        <text x="380" y="124" text-anchor="middle" fill="#9aa0b0" font-size="9" font-family="sans-serif">Bus Arbiter</text>
+                        <text x="380" y="93" text-anchor="middle" fill="#00e5ff" font-size="11" font-weight="700" font-family="sans-serif" data-i18n="physArch.busTopo.svg.mainFrame">MAIN FRAME</text>
+                        <text x="380" y="110" text-anchor="middle" fill="#9aa0b0" font-size="9" font-family="sans-serif" data-i18n="physArch.busTopo.svg.canController">CAN Controller</text>
+                        <text x="380" y="124" text-anchor="middle" fill="#9aa0b0" font-size="9" font-family="sans-serif" data-i18n="physArch.busTopo.svg.busArbiter">Bus Arbiter</text>
                         <!-- connector from frame to bus -->
                         <line x1="380" y1="140" x2="380" y2="148" stroke="rgba(0,229,255,0.8)" stroke-width="3"/>
 
                         <!-- Frame 2 (left) -->
                         <rect x="80" y="60" width="120" height="80" rx="12" fill="rgba(0,229,255,0.07)" stroke="rgba(0,229,255,0.35)" stroke-width="1.5"/>
-                        <text x="140" y="93" text-anchor="middle" fill="#00e5ff" font-size="10" font-weight="700" font-family="sans-serif">FRAME 2</text>
-                        <text x="140" y="110" text-anchor="middle" fill="#9aa0b0" font-size="9" font-family="sans-serif">Standby / Parallel</text>
+                        <text x="140" y="93" text-anchor="middle" fill="#00e5ff" font-size="10" font-weight="700" font-family="sans-serif" data-i18n="physArch.busTopo.svg.frame2">FRAME 2</text>
+                        <text x="140" y="110" text-anchor="middle" fill="#9aa0b0" font-size="9" font-family="sans-serif" data-i18n="physArch.busTopo.svg.standbyParallel">Standby / Parallel</text>
                         <line x1="200" y1="140" x2="200" y2="148" stroke="rgba(0,229,255,0.5)" stroke-width="2"/>
                         <line x1="140" y1="140" x2="200" y2="140" stroke="rgba(0,229,255,0.5)" stroke-width="2"/>
 
                         <!-- Frame 3 (right) -->
                         <rect x="560" y="60" width="120" height="80" rx="12" fill="rgba(0,229,255,0.07)" stroke="rgba(0,229,255,0.35)" stroke-width="1.5"/>
-                        <text x="620" y="93" text-anchor="middle" fill="#00e5ff" font-size="10" font-weight="700" font-family="sans-serif">FRAME N</text>
-                        <text x="620" y="110" text-anchor="middle" fill="#9aa0b0" font-size="9" font-family="sans-serif">Expandable</text>
+                        <text x="620" y="93" text-anchor="middle" fill="#00e5ff" font-size="10" font-weight="700" font-family="sans-serif" data-i18n="physArch.busTopo.svg.frameN">FRAME N</text>
+                        <text x="620" y="110" text-anchor="middle" fill="#9aa0b0" font-size="9" font-family="sans-serif" data-i18n="physArch.busTopo.svg.expandable">Expandable</text>
                         <line x1="560" y1="140" x2="560" y2="148" stroke="rgba(0,229,255,0.5)" stroke-width="2"/>
                         <line x1="560" y1="140" x2="620" y2="140" stroke="rgba(0,229,255,0.5)" stroke-width="2"/>
                         <line x1="620" y1="140" x2="620" y2="140" stroke="rgba(0,229,255,0.5)" stroke-width="2"/>
@@ -699,40 +836,40 @@
                         <!-- Module group 1 -->
                         <line x1="230" y1="172" x2="230" y2="200" stroke="rgba(0,229,255,0.4)" stroke-width="1.5"/>
                         <rect x="185" y="200" width="90" height="50" rx="8" fill="rgba(0,229,255,0.08)" stroke="rgba(0,229,255,0.25)" stroke-width="1"/>
-                        <text x="230" y="222" text-anchor="middle" fill="#e0e4ea" font-size="9" font-family="sans-serif">AC-DC Input</text>
-                        <text x="230" y="236" text-anchor="middle" fill="#9aa0b0" font-size="8" font-family="sans-serif">Input Module</text>
+                        <text x="230" y="222" text-anchor="middle" fill="#e0e4ea" font-size="9" font-family="sans-serif" data-i18n="physArch.busTopo.svg.acDcInput">AC-DC Input</text>
+                        <text x="230" y="236" text-anchor="middle" fill="#9aa0b0" font-size="8" font-family="sans-serif" data-i18n="physArch.busTopo.svg.inputModule">Input Module</text>
 
                         <!-- Module group 2 -->
                         <line x1="310" y1="172" x2="310" y2="200" stroke="rgba(0,229,255,0.4)" stroke-width="1.5"/>
                         <rect x="265" y="200" width="90" height="50" rx="8" fill="rgba(213,0,249,0.08)" stroke="rgba(213,0,249,0.25)" stroke-width="1"/>
-                        <text x="310" y="222" text-anchor="middle" fill="#e0e4ea" font-size="9" font-family="sans-serif">Battery</text>
-                        <text x="310" y="236" text-anchor="middle" fill="#9aa0b0" font-size="8" font-family="sans-serif">Storage Module</text>
+                        <text x="310" y="222" text-anchor="middle" fill="#e0e4ea" font-size="9" font-family="sans-serif" data-i18n="physArch.busTopo.svg.battery">Battery</text>
+                        <text x="310" y="236" text-anchor="middle" fill="#9aa0b0" font-size="8" font-family="sans-serif" data-i18n="physArch.busTopo.svg.storageModule">Storage Module</text>
 
                         <!-- Module group 3 -->
                         <line x1="390" y1="172" x2="390" y2="200" stroke="rgba(0,229,255,0.4)" stroke-width="1.5"/>
                         <rect x="345" y="200" width="90" height="50" rx="8" fill="rgba(0,229,255,0.08)" stroke="rgba(0,229,255,0.25)" stroke-width="1"/>
-                        <text x="390" y="222" text-anchor="middle" fill="#e0e4ea" font-size="9" font-family="sans-serif">Multi-V Output</text>
-                        <text x="390" y="236" text-anchor="middle" fill="#9aa0b0" font-size="8" font-family="sans-serif">Output Module</text>
+                        <text x="390" y="222" text-anchor="middle" fill="#e0e4ea" font-size="9" font-family="sans-serif" data-i18n="physArch.busTopo.svg.multiVOutput">Multi-V Output</text>
+                        <text x="390" y="236" text-anchor="middle" fill="#9aa0b0" font-size="8" font-family="sans-serif" data-i18n="physArch.busTopo.svg.outputModule">Output Module</text>
 
                         <!-- Module group 4 -->
                         <line x1="470" y1="172" x2="470" y2="200" stroke="rgba(0,229,255,0.4)" stroke-width="1.5"/>
                         <rect x="425" y="200" width="90" height="50" rx="8" fill="rgba(255,200,0,0.08)" stroke="rgba(255,200,0,0.25)" stroke-width="1"/>
-                        <text x="470" y="222" text-anchor="middle" fill="#e0e4ea" font-size="9" font-family="sans-serif">IoT / Comms</text>
-                        <text x="470" y="236" text-anchor="middle" fill="#9aa0b0" font-size="8" font-family="sans-serif">Comm Module</text>
+                        <text x="470" y="222" text-anchor="middle" fill="#e0e4ea" font-size="9" font-family="sans-serif" data-i18n="physArch.busTopo.svg.iotComms">IoT / Comms</text>
+                        <text x="470" y="236" text-anchor="middle" fill="#9aa0b0" font-size="8" font-family="sans-serif" data-i18n="physArch.busTopo.svg.commModule">Comm Module</text>
 
                         <!-- Remote module (wall panel) -->
                         <line x1="550" y1="172" x2="550" y2="200" stroke="rgba(213,0,249,0.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
                         <rect x="505" y="200" width="90" height="50" rx="8" fill="rgba(213,0,249,0.08)" stroke="rgba(213,0,249,0.25)" stroke-width="1"/>
-                        <text x="550" y="218" text-anchor="middle" fill="#e0e4ea" font-size="9" font-family="sans-serif">86-Panel</text>
-                        <text x="550" y="230" text-anchor="middle" fill="#e0e4ea" font-size="9" font-family="sans-serif">Remote</text>
-                        <text x="550" y="242" text-anchor="middle" fill="#9aa0b0" font-size="8" font-family="sans-serif">Wall Module</text>
+                        <text x="550" y="218" text-anchor="middle" fill="#e0e4ea" font-size="9" font-family="sans-serif" data-i18n="physArch.busTopo.svg.panel86">86-Panel</text>
+                        <text x="550" y="230" text-anchor="middle" fill="#e0e4ea" font-size="9" font-family="sans-serif" data-i18n="physArch.busTopo.svg.remote">Remote</text>
+                        <text x="550" y="242" text-anchor="middle" fill="#9aa0b0" font-size="8" font-family="sans-serif" data-i18n="physArch.busTopo.svg.wallModule">Wall Module</text>
 
                         <!-- Remote label -->
-                        <text x="550" y="268" text-anchor="middle" fill="rgba(213,0,249,0.7)" font-size="8" font-family="sans-serif">via wall wiring</text>
+                        <text x="550" y="268" text-anchor="middle" fill="rgba(213,0,249,0.7)" font-size="8" font-family="sans-serif" data-i18n="physArch.busTopo.svg.viaWallWiring">via wall wiring</text>
 
                         <!-- SELV safety label -->
                         <rect x="600" y="148" width="140" height="24" rx="6" fill="rgba(255,200,0,0.1)" stroke="rgba(255,200,0,0.3)" stroke-width="1"/>
-                        <text x="670" y="163" text-anchor="middle" fill="#ffd740" font-size="9" font-weight="700" font-family="sans-serif">SELV &lt; 60V ✓ Safe</text>
+                        <text x="670" y="163" text-anchor="middle" fill="#ffd740" font-size="9" font-weight="700" font-family="sans-serif" data-i18n="physArch.busTopo.svg.selvSafe">SELV &lt; 60V ✓ Safe</text>
 
                         <!-- Animated flow dots -->
                         <circle r="4" fill="#00e5ff" opacity=".9">
@@ -753,44 +890,34 @@
                             </linearGradient>
                         </defs>
                     </svg>
-                    <p style="text-align:center;font-size:.85rem;color:var(--text-secondary);margin-top:16px;max-width:none" data-lang="en">Frames connect in star or parallel topology. Add frames to scale power — like stacking server PSUs.</p>
-                    <p style="text-align:center;font-size:.85rem;color:var(--text-secondary);margin-top:16px;max-width:none" data-lang="zh">主机框架以星型或并联拓扑互联，增加框架即可线性扩容——像服务器电源一样堆叠。</p>
+                    <p style="text-align:center;font-size:.85rem;color:var(--text-secondary);margin-top:16px;max-width:none" data-i18n="physArch.busTopo.caption">Frames connect in star or parallel topology. Add frames to scale power — like stacking server PSUs.</p>
                 </div>
 
                 <!-- ── Connector Specification ── -->
-                <h3 style="text-align:center;margin:0 0 30px" data-lang="en">Connector Specification</h3>
-                <h3 style="text-align:center;margin:0 0 30px" data-lang="zh">连接器规范</h3>
+                <h3 id="phys-connector" style="text-align:center;margin:0 0 30px" data-i18n="physArch.connector.heading">Connector Specification</h3>
                 <div class="connector-grid scroll-reveal">
                     <div class="conn-card scroll-reveal stagger-1">
                         <div class="conn-icon power">⚡</div>
-                        <h4 data-lang="en">Power In / Out</h4>
-                        <h4 data-lang="zh">电源进出</h4>
-                        <p data-lang="en" class="active">5.5mm DC jacks with distinct male/female or color coding to prevent reverse insertion during hot-swap.</p>
-                        <p data-lang="zh">5.5mm DC接口，输入公头、输出母座，物理区分防止热插拔误接。</p>
-                        <span class="spec-tag">8A / port · Dual-port for high power</span>
+                        <h4 data-i18n="physArch.connector.cards.0.heading">Power In / Out</h4>
+                        <p data-i18n="physArch.connector.cards.0.content">5.5mm DC jacks with distinct male/female or color coding to prevent reverse insertion during hot-swap.</p>
+                        <span class="spec-tag" data-i18n="physArch.connector.cards.0.tag">8A / port · Dual-port for high power</span>
                     </div>
                     <div class="conn-card scroll-reveal stagger-2">
                         <div class="conn-icon can">📡</div>
-                        <h4 data-lang="en">CAN Communication Bus</h4>
-                        <h4 data-lang="zh">通讯总线</h4>
-                        <p data-lang="en" class="active">RJ45 (8P8C) physical connector carrying CAN_H / CAN_L differential signal. Locking tab removed for tool-free quick release.</p>
-                        <p data-lang="zh">RJ45（8P8C）接口承载CAN差分信号，削除锁止舌实现无工具快拔。</p>
-                        <span class="warn-tag" data-lang="en">⚠ NOT Ethernet — CAN only</span>
-                        <span class="warn-tag" data-lang="zh">⚠ 非以太网 — 仅用于CAN通讯</span>
+                        <h4 data-i18n="physArch.connector.cards.1.heading">CAN Communication Bus</h4>
+                        <p data-i18n="physArch.connector.cards.1.content">RJ45 (8P8C) physical connector carrying CAN_H / CAN_L differential signal. Locking tab removed for tool-free quick release.</p>
+                        <span class="warn-tag" data-i18n="physArch.connector.cards.1.tag">⚠ NOT Ethernet — CAN only</span>
                     </div>
                     <div class="conn-card scroll-reveal stagger-3">
                         <div class="conn-icon slot">🔌</div>
-                        <h4 data-lang="en">Module–Frame Slot Interface</h4>
-                        <h4 data-lang="zh">模块-框架接口</h4>
-                        <p data-lang="en" class="active">Each slot provides both power contacts and CAN signal contacts. Critical modules have a software lock — must request removal via software before physically unplugging.</p>
-                        <p data-lang="zh">每个插槽同时提供电源触点和CAN信号触点，支持热插拔。关键模块需通过软件"申请移除"后方可拔出。</p>
-                        <span class="spec-tag">Hot-Swap Ready · Software Lock</span>
+                        <h4 data-i18n="physArch.connector.cards.2.heading">Module–Frame Slot Interface</h4>
+                        <p data-i18n="physArch.connector.cards.2.content">Each slot provides both power contacts and CAN signal contacts. Critical modules have a software lock — must request removal via software before physically unplugging.</p>
+                        <span class="spec-tag" data-i18n="physArch.connector.cards.2.tag">Hot-Swap Ready · Software Lock</span>
                     </div>
                 </div>
 
                 <!-- ── Module Form Factors ── -->
-                <h3 style="text-align:center;margin:50px 0 30px" data-lang="en">Module Form Factors</h3>
-                <h3 style="text-align:center;margin:50px 0 30px" data-lang="zh">模块形态</h3>
+                <h3 id="phys-modules" style="text-align:center;margin:50px 0 30px" data-i18n="physArch.modules.heading">Module Form Factors</h3>
                 <div class="module-showcase scroll-reveal">
                     <!-- Local modules -->
                     <div class="module-card scroll-reveal-left">
@@ -803,7 +930,6 @@
                                 <rect x="22" y="32" width="42" height="66" rx="6" fill="rgba(0,229,255,0.12)" stroke="rgba(0,229,255,0.5)" stroke-width="1.5"/>
                                 <text x="43" y="60" text-anchor="middle" fill="#00e5ff" font-size="7.5" font-family="sans-serif">AC-DC</text>
                                 <text x="43" y="72" text-anchor="middle" fill="#9aa0b0" font-size="7" font-family="sans-serif">Input</text>
-                                <!-- insert animation arrow -->
                                 <rect x="72" y="32" width="42" height="66" rx="6" fill="rgba(213,0,249,0.12)" stroke="rgba(213,0,249,0.5)" stroke-width="1.5"/>
                                 <text x="93" y="60" text-anchor="middle" fill="#d500f9" font-size="7.5" font-family="sans-serif">Battery</text>
                                 <text x="93" y="72" text-anchor="middle" fill="#9aa0b0" font-size="7" font-family="sans-serif">Storage</text>
@@ -824,10 +950,8 @@
                                 <text x="232" y="22" text-anchor="middle" fill="#00e5ff" font-size="7" font-family="sans-serif">MPPT</text>
                             </svg>
                         </div>
-                        <h4 data-lang="en">Local Modules</h4>
-                        <h4 data-lang="zh">本地模块</h4>
-                        <p data-lang="en" class="active">Inserted directly into standard slots on the host frame. Includes AC-DC inputs, solar MPPT, multi-voltage outputs, USB PD, battery modules, and communication modules.</p>
-                        <p data-lang="zh">直接插入主机框架的标准槽位，包括输入模块（AC-DC、光伏MPPT）、输出模块（多路可调电压、USB PD）、电池模块、通信模块等。</p>
+                        <h4 data-i18n="physArch.modules.local.heading">Local Modules</h4>
+                        <p data-i18n="physArch.modules.local.content">Inserted directly into standard slots on the host frame. Includes AC-DC inputs, solar MPPT, multi-voltage outputs, USB PD, battery modules, and communication modules.</p>
                     </div>
                     <!-- Remote modules -->
                     <div class="module-card scroll-reveal-right">
@@ -860,63 +984,49 @@
                                 <text x="178" y="62" text-anchor="middle" fill="#d500f9" font-size="10">⚡</text>
                             </svg>
                         </div>
-                        <h4 data-lang="en">Remote Modules (86-Panel)</h4>
-                        <h4 data-lang="zh">Remote 模块（86面板）</h4>
-                        <p data-lang="en" class="active">Standard 86-type wall panels installed at endpoints, connected back to the host frame via 36V DC wiring inside the walls. A Type-C PD panel at bedside replaces bulky adapters entirely.</p>
-                        <p data-lang="zh">标准86面板形态，安装于墙壁终端，通过墙内36V直流母线与主机框架相连。例如Type-C PD面板直接嵌入床头，既为设备快充，又省去传统电源适配器。</p>
+                        <h4 data-i18n="physArch.modules.remote.heading">Remote Modules (86-Panel)</h4>
+                        <p data-i18n="physArch.modules.remote.content">Standard 86-type wall panels installed at endpoints, connected back to the host frame via 36V DC wiring inside the walls. A Type-C PD panel at bedside replaces bulky adapters entirely.</p>
                     </div>
                 </div>
 
                 <!-- ── Safety Hardware ── -->
-                <h3 style="text-align:center;margin:50px 0 30px" data-lang="en">Multi-Layer Hardware Safety</h3>
-                <h3 style="text-align:center;margin:50px 0 30px" data-lang="zh">多级硬件安全保护</h3>
+                <h3 id="phys-safety" style="text-align:center;margin:50px 0 30px" data-i18n="physArch.safety.heading">Multi-Layer Hardware Safety</h3>
                 <div class="safety-layers scroll-reveal">
                     <div class="safety-layer scroll-reveal stagger-1">
                         <div class="layer-num">1</div>
                         <div class="layer-body">
-                            <h5 data-lang="en">Per-Module Protection</h5>
-                            <h5 data-lang="zh">模块级保护</h5>
-                            <p data-lang="en" class="active">Every module has built-in over-current, over-temperature, and short-circuit protection — independent of any external signal.</p>
-                            <p data-lang="zh">每个模块自带过流、过温、短路保护，不依赖任何外部信号。</p>
+                            <h5 data-i18n="physArch.safety.layers.0.heading">Per-Module Protection</h5>
+                            <p data-i18n="physArch.safety.layers.0.content">Every module has built-in over-current, over-temperature, and short-circuit protection — independent of any external signal.</p>
                         </div>
                     </div>
                     <div class="safety-layer scroll-reveal stagger-2">
                         <div class="layer-num">2</div>
                         <div class="layer-body">
-                            <h5 data-lang="en">Inter-Frame Link Current Limit</h5>
-                            <h5 data-lang="zh">框架互联电流限制</h5>
-                            <p data-lang="en" class="active">The interconnection module monitors real-time current on the link between frames and enforces a hardware current ceiling.</p>
-                            <p data-lang="zh">串接模块实时监测框架间线路电流，设有硬件电流上限。</p>
+                            <h5 data-i18n="physArch.safety.layers.1.heading">Inter-Frame Link Current Limit</h5>
+                            <p data-i18n="physArch.safety.layers.1.content">The interconnection module monitors real-time current on the link between frames and enforces a hardware current ceiling.</p>
                         </div>
                     </div>
                     <div class="safety-layer scroll-reveal stagger-3">
                         <div class="layer-num">3</div>
                         <div class="layer-body">
-                            <h5 data-lang="en">CO₂ Emergency Module</h5>
-                            <h5 data-lang="zh">CO₂ 应急灭火模块</h5>
-                            <p data-lang="en" class="active">Slow-release mechanism via micro solenoid valve. Triggered only when both high-temperature threshold AND smoke particulates are detected simultaneously — avoiding false triggers. A supercapacitor backup ensures the valve opens even after main power is cut.</p>
-                            <p data-lang="zh">采用缓慢释放机制，通过微型电磁阀控制气瓶。同时检测到高温阈值和烟雾颗粒才判定火灾风险，避免误触发。模块内置超级电容备用电源，确保主电源切断后仍能完成阀门开启。</p>
+                            <h5 data-i18n="physArch.safety.layers.2.heading">CO₂ Emergency Module</h5>
+                            <p data-i18n="physArch.safety.layers.2.content">Slow-release mechanism via micro solenoid valve. Triggered only when both high-temperature threshold AND smoke particulates are detected simultaneously — avoiding false triggers. A supercapacitor backup ensures the valve opens even after main power is cut.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- ── Ecosystem Bridge ── -->
-                <h3 style="text-align:center;margin:50px 0 30px" data-lang="en">Ecosystem Bridging</h3>
-                <h3 style="text-align:center;margin:50px 0 30px" data-lang="zh">生态桥接</h3>
+                <h3 id="phys-eco" style="text-align:center;margin:50px 0 30px" data-i18n="physArch.eco.heading">Ecosystem Bridging</h3>
                 <div class="eco-bridge scroll-reveal" style="margin-bottom:0">
                     <div class="eco-card scroll-reveal-left">
                         <div class="eco-icon">🖥️</div>
-                        <h5 data-lang="en">ATX PSU Converter</h5>
-                        <h5 data-lang="zh">ATX 电源转换模块</h5>
-                        <p data-lang="en" class="active">Leverage the massive inventory of ATX power supplies as a stable, high-power 36V bus source.</p>
-                        <p data-lang="zh">利用海量ATX电源为系统提供稳定大功率来源。</p>
+                        <h5 data-i18n="physArch.eco.atx.heading">ATX PSU Converter</h5>
+                        <p data-i18n="physArch.eco.atx.content">Leverage the massive inventory of ATX power supplies as a stable, high-power 36V bus source.</p>
                     </div>
                     <div class="eco-card scroll-reveal-right">
                         <div class="eco-icon">🗄️</div>
-                        <h5 data-lang="en">Server PSU Converter</h5>
-                        <h5 data-lang="zh">服务器电源转换模块</h5>
-                        <p data-lang="en" class="active">Adapt second-market server hot-swap PSUs to drastically lower system power costs.</p>
-                        <p data-lang="zh">适配二手市场存量庞大的服务器可插拔电源模块，拉低系统供电成本。</p>
+                        <h5 data-i18n="physArch.eco.server.heading">Server PSU Converter</h5>
+                        <p data-i18n="physArch.eco.server.content">Adapt second-market server hot-swap PSUs to drastically lower system power costs.</p>
                     </div>
                 </div>
             </div>
@@ -925,15 +1035,12 @@
         <!-- ══════════ COMMUNICATION ARCHITECTURE ══════════ -->
         <section class="scroll-reveal">
             <div class="container">
-                <span class="section-eyebrow" data-lang="en" style="display:block;text-align:center">Software &amp; Protocol</span>
-                <span class="section-eyebrow" data-lang="zh" style="display:block;text-align:center">软件与协议</span>
-                <h2 data-lang="en" class="active" style="text-align:center">Communication Architecture</h2>
-                <h2 data-lang="zh" style="text-align:center">通讯架构</h2>
+                <span class="section-eyebrow" data-i18n="commArch.eyebrow" style="text-align:center">Software &amp; Protocol</span>
+                <h2 data-i18n="commArch.heading" style="text-align:center">Communication Architecture</h2>
 
                 <!-- ── CAN Bus Diagram ── -->
-                <div class="can-diagram-wrap scroll-reveal">
-                    <div class="section-label" data-lang="en">CAN Bus — How It Works</div>
-                    <div class="section-label" data-lang="zh">CAN 总线工作原理</div>
+                <div id="comm-canbus" class="can-diagram-wrap scroll-reveal">
+                    <div class="section-label" data-i18n="commArch.canBus.label">CAN Bus — How It Works</div>
                     <svg viewBox="0 0 760 260" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;display:block;margin:0 auto">
                         <!-- CAN bus line -->
                         <line x1="60" y1="130" x2="700" y2="130" stroke="rgba(213,0,249,0.6)" stroke-width="3"/>
@@ -1000,20 +1107,17 @@
                             <animateMotion dur="1.5s" repeatCount="indefinite" begin=".9s" path="M640,130 L380,130"/>
                         </circle>
                     </svg>
-                    <p style="text-align:center;font-size:.85rem;color:var(--text-secondary);margin-top:16px;max-width:none" data-lang="en">CAN controller lives in the frame — modules only need a transceiver chip. Auto-assigns CAN ID on insertion. No factory pre-configuration needed.</p>
-                    <p style="text-align:center;font-size:.85rem;color:var(--text-secondary);margin-top:16px;max-width:none" data-lang="zh">CAN控制器内置于主机框架，模块侧仅需收发器芯片。模块插入时自动分配CAN ID，无需出厂预配置。</p>
+                    <p style="text-align:center;font-size:.85rem;color:var(--text-secondary);margin-top:16px;max-width:none" data-i18n="commArch.canBus.caption">CAN controller lives in the frame — modules only need a transceiver chip. Auto-assigns CAN ID on insertion. No factory pre-configuration needed.</p>
                 </div>
 
                 <!-- ── Multi-Frame Collaboration Modes ── -->
-                <h3 style="text-align:center;margin:0 0 12px" data-lang="en">Multi-Frame Collaboration Modes</h3>
-                <h3 style="text-align:center;margin:0 0 12px" data-lang="zh">多框架协作模式</h3>
-                <p style="text-align:center;margin-bottom:0" data-lang="en">Click to explore each redundancy strategy</p>
-                <p style="text-align:center;margin-bottom:0" data-lang="zh">点击查看各冗余协作策略</p>
+                <h3 id="comm-modes" style="text-align:center;margin:0 0 12px" data-i18n="commArch.modes.heading">Multi-Frame Collaboration Modes</h3>
+                <p style="text-align:center;margin-bottom:0" data-i18n="commArch.modes.hint">Click to explore each redundancy strategy</p>
                 <div class="frame-modes scroll-reveal">
                     <div class="mode-tabs">
-                        <button class="mode-tab active" data-mode="hotstandby" data-lang-en="Hot Standby" data-lang-zh="热备模式">Hot Standby</button>
-                        <button class="mode-tab" data-mode="loadshare" data-lang-en="Load Sharing" data-lang-zh="负载分担">Load Sharing</button>
-                        <button class="mode-tab" data-mode="distributed" data-lang-en="Fully Distributed" data-lang-zh="完全分布式">Fully Distributed</button>
+                        <button class="mode-tab active" data-mode="hotstandby" data-i18n="commArch.modes.tabs.hotStandby">Hot Standby</button>
+                        <button class="mode-tab" data-mode="loadshare" data-i18n="commArch.modes.tabs.loadSharing">Load Sharing</button>
+                        <button class="mode-tab" data-mode="distributed" data-i18n="commArch.modes.tabs.fullyDistributed">Fully Distributed</button>
                     </div>
 
                     <!-- Hot Standby -->
@@ -1042,11 +1146,9 @@
                                 <text x="400" y="84" text-anchor="middle" fill="#9aa0b0" font-size="10" font-family="sans-serif">STANDBY — listening</text>
                                 <text x="400" y="100" text-anchor="middle" fill="#9aa0b0" font-size="10" font-family="sans-serif">ready to take over</text>
                                 <!-- Failover label -->
-                                <text x="300" y="155" text-anchor="middle" fill="rgba(255,200,0,0.7)" font-size="10" font-family="sans-serif">If heartbeat lost → Frame B auto-takes-over</text>
-                                <text x="300" y="170" text-anchor="middle" fill="rgba(255,200,0,0.5)" font-size="9" font-family="sans-serif">如心跳丢失 → 备机自动接管</text>
+                                <text x="300" y="162" text-anchor="middle" fill="rgba(255,200,0,0.7)" font-size="10" font-family="sans-serif" data-i18n="commArch.modes.hotStandby.svgFailover">If heartbeat lost → Frame B auto-takes-over</text>
                             </svg>
-                            <p class="mode-desc" data-lang="en">One frame acts as the active controller sending commands, while another listens. If the active frame's heartbeat is lost, the standby automatically takes over — zero manual intervention.</p>
-                            <p class="mode-desc" data-lang="zh">一台框架作为主控制器发送指令，另一台监听。主框架心跳丢失时，备机自动接管，无需人工干预。</p>
+                            <p class="mode-desc" data-i18n="commArch.modes.hotStandby.desc">One frame acts as the active controller sending commands, while another listens. If the active frame's heartbeat is lost, the standby automatically takes over — zero manual intervention.</p>
                         </div>
                     </div>
 
@@ -1085,8 +1187,7 @@
                                 <line x1="295" y1="130" x2="295" y2="155" stroke="rgba(213,0,249,0.3)" stroke-width="1.5"/>
                                 <line x1="485" y1="130" x2="485" y2="155" stroke="rgba(255,200,0,0.3)" stroke-width="1.5"/>
                             </svg>
-                            <p class="mode-desc" data-lang="en">Each frame manages its own group of modules independently. No interference between groups. Ideal for partitioned deployments where different zones need separate control.</p>
-                            <p class="mode-desc" data-lang="zh">各框架分别管理各自的模块群，互不干扰。适合分区部署场景，不同区域独立控制。</p>
+                            <p class="mode-desc" data-i18n="commArch.modes.loadSharing.desc">Each frame manages its own group of modules independently. No interference between groups. Ideal for partitioned deployments where different zones need separate control.</p>
                         </div>
                     </div>
 
@@ -1121,104 +1222,77 @@
                                 <!-- Modules responding -->
                                 <text x="300" y="195" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="9" font-family="sans-serif">Modules respond by address — any frame can issue commands</text>
                             </svg>
-                            <p class="mode-desc" data-lang="en">Every frame can issue control commands. Modules respond according to their addresses. Maximum flexibility for complex distributed deployments.</p>
-                            <p class="mode-desc" data-lang="zh">所有框架均可发出控制指令，模块按地址响应。适合复杂分布式部署，灵活性最高。</p>
+                            <p class="mode-desc" data-i18n="commArch.modes.fullyDistributed.desc">Every frame can issue control commands. Modules respond according to their addresses. Maximum flexibility for complex distributed deployments.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- ── Distributed Watchdog ── -->
-                <h3 style="text-align:center;margin:0 0 12px" data-lang="en">Distributed Watchdog Architecture</h3>
-                <h3 style="text-align:center;margin:0 0 12px" data-lang="zh">分布式看门狗体系</h3>
-                <p style="text-align:center;margin-bottom:30px" data-lang="en">Four tiers of protection — from hardware to cloud, each independently guarding your system</p>
-                <p style="text-align:center;margin-bottom:30px" data-lang="zh">四级保护体系——从硬件到云端，每一层独立守护系统安全</p>
+                <h3 id="comm-watchdog" style="text-align:center;margin:0 0 12px" data-i18n="commArch.watchdog.heading">Distributed Watchdog Architecture</h3>
+                <p style="text-align:center;margin-bottom:30px" data-i18n="commArch.watchdog.hint">Four tiers of protection — from hardware to cloud, each independently guarding your system</p>
                 <div class="watchdog-tiers scroll-reveal">
                     <div class="wd-tier scroll-reveal stagger-1">
                         <div class="wd-tier-dot hw">🔩</div>
                         <div class="wd-tier-body">
-                            <span class="wd-badge hw" data-lang="en">Tier 1 · Hardware</span>
-                            <span class="wd-badge hw" data-lang="zh">第一级 · 硬件级</span>
-                            <h5 data-lang="en">Module Self-Protection</h5>
-                            <h5 data-lang="zh">模块自保</h5>
-                            <p data-lang="en" class="active">Every module ships with built-in pure-hardware over-current and over-temperature protection. Zero dependency on external signals — the ultimate safety fallback that never fails even if the bus goes down.</p>
-                            <p data-lang="zh">每个模块出厂内置纯硬件过流/过温保护，不依赖任何外部信号。即使总线断开，此级保护依然有效——是系统的最终安全兜底。</p>
+                            <span class="wd-badge hw" data-i18n="commArch.watchdog.tiers.0.badge">Tier 1 · Hardware</span>
+                            <h5 data-i18n="commArch.watchdog.tiers.0.heading">Module Self-Protection</h5>
+                            <p data-i18n="commArch.watchdog.tiers.0.content">Every module ships with built-in pure-hardware over-current and over-temperature protection. Zero dependency on external signals — the ultimate safety fallback that never fails even if the bus goes down.</p>
                         </div>
                     </div>
                     <div class="wd-tier scroll-reveal stagger-2">
                         <div class="wd-tier-dot link">💓</div>
                         <div class="wd-tier-body">
-                            <span class="wd-badge link" data-lang="en">Tier 2 · Link</span>
-                            <span class="wd-badge link" data-lang="zh">第二级 · 链路级</span>
-                            <h5 data-lang="en">Frame Direct Heartbeat</h5>
-                            <h5 data-lang="zh">框架直连心跳</h5>
-                            <p data-lang="en" class="active">The host frame sends periodic heartbeat frames to all modules in its slots. If a module doesn't receive a heartbeat within the timeout window, it executes a pre-defined safe action. Fastest local software-level protection.</p>
-                            <p data-lang="zh">框架对插槽上的模块发送周期性心跳帧，模块超时未收到则执行预设安全动作。这是本地最快的软件级保护。</p>
+                            <span class="wd-badge link" data-i18n="commArch.watchdog.tiers.1.badge">Tier 2 · Link</span>
+                            <h5 data-i18n="commArch.watchdog.tiers.1.heading">Frame Direct Heartbeat</h5>
+                            <p data-i18n="commArch.watchdog.tiers.1.content">The host frame sends periodic heartbeat frames to all modules in its slots. If a module doesn't receive a heartbeat within the timeout window, it executes a pre-defined safe action. Fastest local software-level protection.</p>
                         </div>
                     </div>
                     <div class="wd-tier scroll-reveal stagger-3">
                         <div class="wd-tier-dot svc">☁️</div>
                         <div class="wd-tier-body">
-                            <span class="wd-badge svc" data-lang="en">Tier 3 · Service</span>
-                            <span class="wd-badge svc" data-lang="zh">第三级 · 服务级</span>
-                            <h5 data-lang="en">Programmable Remote Watchdog</h5>
-                            <h5 data-lang="zh">可编程远程看门狗</h5>
-                            <p data-lang="en" class="active">User-defined watchdog policies deployed from a remote server via communication modules. Configurable timeout, retry count, and triggered action (restart / power off / switch supply). Ideal for remote hosting and unattended infrastructure.</p>
-                            <p data-lang="zh">用户通过通信模块，由服务器下发自定义看门狗策略——设定超时时长、重试次数和触发动作（重启、断电、切换供电）。适用于异地设备托管等远程运维场景。</p>
+                            <span class="wd-badge svc" data-i18n="commArch.watchdog.tiers.2.badge">Tier 3 · Service</span>
+                            <h5 data-i18n="commArch.watchdog.tiers.2.heading">Programmable Remote Watchdog</h5>
+                            <p data-i18n="commArch.watchdog.tiers.2.content">User-defined watchdog policies deployed from a remote server via communication modules. Configurable timeout, retry count, and triggered action (restart / power off / switch supply). Ideal for remote hosting and unattended infrastructure.</p>
                         </div>
                     </div>
                     <div class="wd-tier scroll-reveal" style="transition-delay:.4s">
                         <div class="wd-tier-dot cross">🔗</div>
                         <div class="wd-tier-body">
-                            <span class="wd-badge cross" data-lang="en">Tier 4 · Redundant Cross-Feed</span>
-                            <span class="wd-badge cross" data-lang="zh">第四级 · 冗余交叉喂狗</span>
-                            <h5 data-lang="en">Multi-Path Consensus Protection</h5>
-                            <h5 data-lang="zh">多路径共识保护</h5>
-                            <p data-lang="en" class="active">Multiple communication modules (4G, Wi-Fi, Ethernet, LoRa) each independently maintain watchdog heartbeats. A single link failure doesn't kill the watchdog. In extreme scenarios, multiple watchdog sources watch each other — a catastrophic action requires consensus from several sources simultaneously, preventing any single false judgment from causing an erroneous power-down.</p>
-                            <p data-lang="zh">系统可同时部署多个通信模块（蜂窝网、Wi-Fi、以太网、LoRa），每个模块独立维护看门狗心跳。单条链路中断不影响看门狗存活。极端场景下可配置多个看门狗源相互监督，需多方同时判定失效才执行最终动作，防止单一误判导致误断电。</p>
+                            <span class="wd-badge cross" data-i18n="commArch.watchdog.tiers.3.badge">Tier 4 · Redundant Cross-Feed</span>
+                            <h5 data-i18n="commArch.watchdog.tiers.3.heading">Multi-Path Consensus Protection</h5>
+                            <p data-i18n="commArch.watchdog.tiers.3.content">Multiple communication modules (4G, Wi-Fi, Ethernet, LoRa) each independently maintain watchdog heartbeats. A single link failure doesn't kill the watchdog. In extreme scenarios, multiple watchdog sources watch each other — a catastrophic action requires consensus from several sources simultaneously, preventing any single false judgment from causing an erroneous power-down.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- ── Full Module Observability ── -->
-                <h3 style="text-align:center;margin:0 0 30px" data-lang="en">Full-Module Observability</h3>
-                <h3 style="text-align:center;margin:0 0 30px" data-lang="zh">全模块可观测</h3>
+                <h3 id="comm-observability" style="text-align:center;margin:0 0 30px" data-i18n="commArch.observability.heading">Full-Module Observability</h3>
                 <div class="obs-grid scroll-reveal">
                     <div class="obs-card scroll-reveal stagger-1">
                         <div class="obs-icon">⚡</div>
-                        <h5 data-lang="en">Input / Output Modules</h5>
-                        <h5 data-lang="zh">输入 / 输出模块</h5>
-                        <div class="obs-metrics">
-                            <span class="obs-metric">Voltage</span>
-                            <span class="obs-metric">Current</span>
-                            <span class="obs-metric">Power</span>
-                            <span class="obs-metric">Switch State</span>
+                        <h5 data-i18n="commArch.observability.cards.0.heading">Input / Output Modules</h5>
+                        <div class="obs-metrics" data-i18n-html="commArch.observability.cards.0.metrics">
+                            <span class="obs-metric">Voltage</span><span class="obs-metric">Current</span><span class="obs-metric">Power</span><span class="obs-metric">Switch State</span>
                         </div>
                     </div>
                     <div class="obs-card scroll-reveal stagger-2">
                         <div class="obs-icon">🔋</div>
-                        <h5 data-lang="en">Battery Module</h5>
-                        <h5 data-lang="zh">电池模块</h5>
-                        <div class="obs-metrics">
-                            <span class="obs-metric">Pack Voltage</span>
-                            <span class="obs-metric">Cell Resistance</span>
-                            <span class="obs-metric">Temperature</span>
-                            <span class="obs-metric">State of Health</span>
+                        <h5 data-i18n="commArch.observability.cards.1.heading">Battery Module</h5>
+                        <div class="obs-metrics" data-i18n-html="commArch.observability.cards.1.metrics">
+                            <span class="obs-metric">Pack Voltage</span><span class="obs-metric">Cell Resistance</span><span class="obs-metric">Temperature</span><span class="obs-metric">State of Health</span>
                         </div>
                     </div>
                     <div class="obs-card scroll-reveal stagger-3">
                         <div class="obs-icon">🔗</div>
-                        <h5 data-lang="en">Interconnection Module</h5>
-                        <h5 data-lang="zh">串接模块</h5>
-                        <div class="obs-metrics">
-                            <span class="obs-metric">Link Current</span>
-                            <span class="obs-metric">Load Awareness</span>
+                        <h5 data-i18n="commArch.observability.cards.2.heading">Interconnection Module</h5>
+                        <div class="obs-metrics" data-i18n-html="commArch.observability.cards.2.metrics">
+                            <span class="obs-metric">Link Current</span><span class="obs-metric">Load Awareness</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- ── Network Redundancy ── -->
-                <h3 style="text-align:center;margin:0 0 30px" data-lang="en">Network Access &amp; Redundancy</h3>
-                <h3 style="text-align:center;margin:0 0 30px" data-lang="zh">网络接入与冗余</h3>
+                <h3 id="comm-network" style="text-align:center;margin:0 0 30px" data-i18n="commArch.network.heading">Network Access &amp; Redundancy</h3>
                 <div class="net-redundancy scroll-reveal">
                     <div class="net-vis">
                         <svg viewBox="0 0 700 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
@@ -1268,8 +1342,7 @@
                                 <animateMotion dur="2.5s" repeatCount="indefinite" begin=".8s" path="M580,45 L425,90 L350,100 L350,165"/>
                             </circle>
                         </svg>
-                        <p style="text-align:center;font-size:.85rem;color:var(--text-secondary);margin-top:16px;max-width:none" data-lang="en">Plug in multiple communication modules simultaneously. If one network fails, another takes over automatically — critical infrastructure stays reachable.</p>
-                        <p style="text-align:center;font-size:.85rem;color:var(--text-secondary);margin-top:16px;max-width:none" data-lang="zh">同时插入多个不同类型的通信模块互为备份，一个网络中断时自动切换，保障关键基础设施的持续受控。</p>
+                        <p style="text-align:center;font-size:.85rem;color:var(--text-secondary);margin-top:16px;max-width:none" data-i18n="commArch.network.caption">Plug in multiple communication modules simultaneously. If one network fails, another takes over automatically — critical infrastructure stays reachable.</p>
                     </div>
                 </div>
             </div>
@@ -1278,102 +1351,341 @@
         <!-- ══════════ RECRUITMENT ══════════ -->
         <section>
             <div class="recruit-card">
-                <h2 data-lang="en" class="active">Founding Team Recruitment</h2>
-                <h2 data-lang="zh">创始团队招募</h2>
-                <p data-lang="en" class="active">We're looking for passionate volunteers to shape the open-source power standard of the future. This is a <strong>purely pro-bono, community-driven</strong> effort. If our vision resonates, join us.</p>
-                <p data-lang="zh">我们正在寻找有热情的志愿者，共同塑造未来的开源电源标准。这是一项<strong>纯公益、社区驱动</strong>的事业。如果这个愿景与您共鸣，请加入我们。</p>
-                <div class="roles">
-                    <span class="role-tag">⚡ Power Electronics</span>
-                    <span class="role-tag">🔌 Electrical Design</span>
-                    <span class="role-tag">📡 Communication Protocols</span>
-                    <span class="role-tag">🏠 Smart Home Experience</span>
-                    <span class="role-tag">🛠 Embedded Systems</span>
-                    <span class="role-tag">📐 Mechanical / Enclosure</span>
+                <h2 data-i18n="recruit.heading">Founding Team Recruitment</h2>
+                <p data-i18n-html="recruit.content">We're looking for passionate volunteers (individuals, communities, organizations or companies) to shape the open-source power standard of the future. This is a <strong>purely pro-bono, community-driven</strong> effort. If our vision resonates, join us.</p>
+                <div class="roles" data-i18n-html="recruit.roles">
+                    <span class="role-tag">⚡ Power Electronics</span><span class="role-tag">🔌 Electrical Design</span><span class="role-tag">📡 Communication Protocols</span><span class="role-tag">🏠 Smart Home Experience</span><span class="role-tag">🛠 Embedded Systems</span><span class="role-tag">📐 Mechanical / Enclosure</span>
                 </div>
-                <div data-lang="en" class="active">
+                <div data-i18n-html="recruit.callToAction">
                     <p>Send your resume / portfolio, or just share your ideas and critique. Contributors who bring significant insights may be invited to the founding team.</p>
                 </div>
-                <div data-lang="zh">
-                    <p>请将简历/作品集，或任何想法与建议发送给我们。提出重要意见的贡献者将被邀请加入创始团队。</p>
-                </div>
                 <a id="contact-email" href="javascript:void(0)" class="email-link" onmouseover="this.style.cursor='pointer'">📧 <span id="email-display">hello [at] neon-ups [dot] org</span></a>
-                <div class="note" data-lang="en">(Email address will be decoded on hover/click — spam protection enabled)</div>
-                <div class="note" data-lang="zh">（悬停或点击时显示真实邮箱 — 已启用防垃圾邮件保护）</div>
+                <div class="note" data-i18n="recruit.note">(Email address will be decoded on hover/click — spam protection enabled)</div>
             </div>
         </section>
     </main>
 
     <footer>
         <div class="container">
-            <p>© 2026 NeonUPS Project. Open source under MIT license. <a href="https://github.com/neon9809/NeonUPS" target="_blank">GitHub</a> · <a href="https://n
-eon-ups.org">neon-ups.org</a></p>
+            <p data-i18n-html="footer.text">© 2026 NeonUPS Project. Open source under MIT license. <a href="https://github.com/neon9809/NeonUPS" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://neon-ups.org">neon-ups.org</a></p>
         </div>
     </footer>
     </div><!-- end scroll-container -->
 
     <script>
     (function() {
-        // ── Loader ──
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.getElementById('loader').classList.add('hidden');
-            }, 800);
-        });
+        // ── Terminal Boot Loader ──
+        (function() {
+            var termEl = document.getElementById('terminal-content');
+            var footerEl = document.getElementById('terminal-footer');
+            var loaderEl = document.getElementById('loader');
+            var closeBtn = document.getElementById('terminal-close-btn');
+            var ready = false;
 
-        // ── Scroll indicator ──
+            // Append a whole line at once as a <div> (not char-by-char)
+            function appendLine(text, cls) {
+                var div = document.createElement('div');
+                if (cls) div.className = cls;
+                div.textContent = text;
+                termEl.appendChild(div);
+                var term = document.querySelector('.terminal');
+                if (term) term.scrollTop = term.scrollHeight;
+            }
+
+            // Each step: { text, cls, delay (ms before printing this line) }
+            // The ASCII banner block: printed with 20ms gaps for a fast burst effect
+            var steps = [
+                // ── ASCII banner ── (burst: 15ms between lines)
+                { text:'  ', cls:'cyan bold', delay:0 },
+                { text:' ████     ██                                 ██     ██ ███████   ████████', cls:'cyan bold', delay:15 },
+                { text:'░██░██   ░██                                ░██    ░██░██░░░░██ ██░░░░░░', cls:'cyan bold', delay:15 },
+                { text:'░██░░██  ░██  █████   ██████  ███████       ░██    ░██░██   ░██░██', cls:'cyan bold', delay:15 },
+                { text:'░██ ░░██ ░██ ██░░░██ ██░░░░██░░██░░░██ █████░██    ░██░███████ ░█████████', cls:'cyan bold', delay:15 },
+                { text:'░██  ░░██░██░███████░██   ░██ ░██  ░██░░░░░ ░██    ░██░██░░░░  ░░░░░░░░██', cls:'cyan bold', delay:15 },
+                { text:'░██   ░░████░██░░░░ ░██   ░██ ░██  ░██      ░██    ░██░██             ░██', cls:'cyan bold', delay:15 },
+                { text:'░██    ░░███░░██████░░██████  ███  ░██      ░░███████ ░██       ████████', cls:'cyan bold', delay:15 },
+                { text:'░░      ░░░  ░░░░░░  ░░░░░░  ░░░   ░░        ░░░░░░░  ░░       ░░░░░░░░', cls:'cyan bold', delay:15 },
+                { text:'  ', cls:'cyan bold', delay:50 },
+                { text:'  ', cls:'cyan bold', delay:0 },
+                // ── Header ──
+                { text:'', cls:'', delay:80 },
+                { text:'Neon-UPS Bootloader v1.0.0-alpha (build 20260426)', cls:'white bold', delay:60 },
+                { text:'Copyright (c) 2026 Neon-UPS Project', cls:'dim', delay:40 },
+                { text:'Licensed under CERN-OHL-P v2', cls:'dim', delay:200 },
+                { text:'  ', cls:'cyan bold', delay:100 },
+                // ── INIT ──
+                { text:'', cls:'', delay:50 },
+                { text:'[INIT] Booting from internal flash (16 MB NOR) ......', cls:'white', delay:60 },
+                { text:'       CPU: ARM Cortex-M7 @ 480 MHz, FPv5-D16', cls:'dim', delay:30 },
+                { text:'       SRAM: 1024 KB internal + 8 MB PSRAM (Quad SPI)', cls:'dim', delay:30 },
+                { text:'[INIT] Mounting LittleFS ...... [  OK  ]', cls:'white', delay:100 },
+                // ── PWR ──
+                { text:'', cls:'', delay:40 },
+                { text:'[PWR]  36V DC SELV bus pre-charge ...... [  OK  ]', cls:'white', delay:100 },
+                { text:'[PWR]  Nominal 36.0V, idle current 0.12A', cls:'dim', delay:80 },
+                // ── CAN ──
+                { text:'', cls:'', delay:40 },
+                { text:'[CAN]  Initializing CAN controller (FD capable) ......', cls:'white', delay:80 },
+                { text:'[CAN]  Bitrate 1 Mbps, termination enabled, bus-off recovery on', cls:'dim', delay:30 },
+                { text:'[CAN]  ⚠ CAUTION: CAN physical layer uses modified RJ45 connectors.', cls:'yellow', delay:40 },
+                { text:'       DO NOT connect to Ethernet equipment.', cls:'yellow', delay:40 },
+                { text:'[CAN]  Local Mainframe ID: 0x01 (Primary)', cls:'dim', delay:100 },
+                // ── SCAN ──
+                { text:'', cls:'', delay:40 },
+                { text:'[SCAN] Enumerating local module slots (8 slots) ......', cls:'white', delay:100 },
+                { text:'  0: Mainframe Controller (Neon-UPS MCU) ........ [SELF]', cls:'dim', delay:50 },
+                { text:'  1: ATX PSU Adapter Module v1.0 (12V→36V Boost, 500W) ... [  OK  ]', cls:'dim', delay:80 },
+                { text:'  2: MPPT Solar Input Module v1.0 (15-60VDC→36V, 200W) ... [  OK  ]', cls:'dim', delay:80 },
+                { text:'  3: Battery Module v2.1 (7S Li-Ion, 25.9V nom, 20Ah) ... [  OK  ]', cls:'dim', delay:80 },
+                { text:'  4: Adjustable DC Output Module v1.1 (2-ch, 3.3..24V/5A) ... [  OK  ]', cls:'dim', delay:80 },
+                { text:'  5: USB-PD Output Module v1.2 (2×USB-C + 2×USB-A, 100W) ... [  OK  ]', cls:'dim', delay:80 },
+                { text:'  6: CO₂ Safety & Suppression Module v1.0 (slow-release) ... [  OK  ]', cls:'dim', delay:80 },
+                { text:'  7: Multi-Comms Module v2.0 (Eth/WiFi/LoRa) ... [  OK  ]', cls:'dim', delay:100 },
+                // ── MOD ──
+                { text:'', cls:'', delay:40 },
+                { text:'[MOD] Assigning dynamic CAN IDs ......', cls:'white', delay:80 },
+                { text:'      Slot1=0x11, Slot2=0x12, Slot3=0x13, Slot4=0x14, Slot5=0x15, Slot6=0x16, Slot7=0x17', cls:'dim', delay:40 },
+                { text:'[MOD] Hotswap lock: Slot3 (Battery) software-locked; removal requires software request.', cls:'yellow', delay:100 },
+                { text:'[MOD] Slot 1 ATX adapter: 12V input stable, output 36.1V / 2.0A ... [  OK  ]', cls:'dim', delay:100 },
+                { text:'[MOD] Slot 2 MPPT: panel voltage 44.2V, charging 158W ... [  OK  ]', cls:'dim', delay:80 },
+                { text:'[MOD] Slot 3 Battery: SoC 78%, pack 28.3V, cell balance OK, SOH 95% ... [  OK  ]', cls:'dim', delay:100 },
+                { text:'      Cell temps 29/30/29/30/31/30/29 °C, estimated runtime 3h42m at current load.', cls:'dim', delay:100 },
+                { text:'[MOD] Slot 6 CO₂ module: cylinder pressure 68 bar, supercap backup 98%,', cls:'dim', delay:40 },
+                { text:'      slow-release solenoid test PASS, smoke/heat sensors nominal.', cls:'dim', delay:100 },
+                // ── WDG ──
+                { text:'', cls:'', delay:40 },
+                { text:'[WDG] Configuring tiered watchdog architecture ......', cls:'white', delay:80 },
+                { text:'[WDG]  Hardware tier: factory-set overcurrent/overtemp fuses ... [  OK  ]', cls:'dim', delay:100 },
+                { text:'[WDG]  Link tier: 100ms heartbeat on CAN for all modules ... [  OK  ]', cls:'dim', delay:100 },
+                { text:'[WDG]  Service tier: remote watchdog policy loaded (timeout 30s, action restart) via LoRa & WiFi.', cls:'dim', delay:120 },
+                // ── NET ──
+                { text:'', cls:'', delay:40 },
+                { text:'[NET] Slot 7 Communication Module initializing ......', cls:'white', delay:80 },
+                { text:'[NET]  Ethernet: link up 1000BASE-T, DHCP 192.168.1.10/24', cls:'dim', delay:40 },
+                { text:'[NET]  Wi-Fi: connected "Neon-Nest" (RSSI -42 dBm), IP 192.168.1.11', cls:'dim', delay:40 },
+                { text:'[NET]  LoRaWAN: joined (DevAddr 2601ABCD), confirmed uplink', cls:'dim', delay:40 },
+                { text:'[NET]  Web console: http://neon-ups.local | https://192.168.1.10', cls:'dim', delay:120 },
+                // ── PEER ──
+                { text:'', cls:'', delay:40 },
+                { text:'[PEER] Scanning for other mainframes on CAN ...... none found, operating standalone.', cls:'dim', delay:120 },
+                // ── Final ──
+                { text:'', cls:'', delay:60 },
+                { text:'[INIT] All modules initialized, loading application core ......', cls:'white', delay:100 },
+                { text:'', cls:'', delay:150 },
+                { text:'================================================================', cls:'cyan', delay:100 },
+                { text:' Neon-UPS v1.0.0 (Codename: SELENE) online.', cls:'green bold', delay:60 },
+                { text:' "Energy reimagined, sustainably."', cls:'white', delay:60 },
+                { text:'----------------------------------------------------------------', cls:'cyan', delay:60 },
+                { text:' System ready. Type \'help\' for available commands.', cls:'white', delay:60 },
+                { text:'================================================================', cls:'cyan', delay:100 },
+                // ── Prompt with blinking cursor ──
+                { text:'', cls:'', delay:100 },
+                { text:'neon-ups> ', cls:'green', delay:0, last:true },
+            ];
+
+            var stepIdx = 0;
+
+            function printNext() {
+                if (stepIdx >= steps.length) { onBootComplete(); return; }
+                var s = steps[stepIdx];
+                appendLine(s.text, s.cls);
+                stepIdx++;
+                if (s.last) {
+                    // Append a blinking cursor span inline
+                    var lastDiv = termEl.lastElementChild;
+                    if (lastDiv) {
+                        var cursor = document.createElement('span');
+                        cursor.className = 'terminal-cursor';
+                        cursor.textContent = '█';
+                        lastDiv.appendChild(cursor);
+                    }
+                    // After a short pause, show footer
+                    setTimeout(onBootComplete, 600);
+                    return;
+                }
+                setTimeout(printNext, s.delay || 40);
+            }
+
+            function onBootComplete() {
+                ready = true;
+                footerEl.style.display = 'block';
+                var term = document.querySelector('.terminal');
+                if (term) term.scrollTop = term.scrollHeight;
+            }
+
+            function hideLoader() {
+                if (!ready) return;
+                loaderEl.classList.add('hidden');
+                document.removeEventListener('keydown', onKeyDown);
+            }
+
+            function onKeyDown(e) {
+                if (e.key === 'Enter' || e.key === 'Return') {
+                    e.preventDefault();
+                    hideLoader();
+                }
+            }
+
+            closeBtn.addEventListener('click', hideLoader);
+            document.addEventListener('keydown', onKeyDown);
+
+            // Start after a short initial delay
+            setTimeout(printNext, 400);
+        })();
+
+        // ── Scroll indicator (sidebar style) ──
         const scrollContainer = document.getElementById('scroll-container');
-        const scrollDots = document.querySelectorAll('.scroll-dot');
         const sections = document.querySelectorAll('section');
         const progressBar = document.getElementById('progress-bar');
+        const indicatorDot = document.getElementById('indicatorDot');
+        const tocLevel1Items = document.querySelectorAll('.toc-item-level1');
+        const tocLevel2Items = document.querySelectorAll('.toc-item-level2');
+
+        var subSectionMap = {
+            4: ['phys-connector', 'phys-modules', 'phys-safety', 'phys-eco'],
+            5: ['comm-canbus', 'comm-modes', 'comm-watchdog', 'comm-observability', 'comm-network']
+        };
+
+        function getCurrentSectionIndex() {
+            var containerRect = scrollContainer.getBoundingClientRect();
+            var targetY = containerRect.top + containerRect.height * 0.35;
+            var bestIdx = 0;
+            var bestDist = Infinity;
+            sections.forEach(function(sec, idx) {
+                var rect = sec.getBoundingClientRect();
+                var dist = Math.abs(rect.top - targetY);
+                if (rect.top <= targetY + 10 && dist < bestDist) { bestDist = dist; bestIdx = idx; }
+            });
+            return bestIdx;
+        }
+
+        function getActiveSubIndex(primaryIdx) {
+            var ids = subSectionMap[primaryIdx];
+            if (!ids) return -1;
+            var containerRect = scrollContainer.getBoundingClientRect();
+            var targetY = containerRect.top + containerRect.height * 0.35;
+            var bestIdx = -1;
+            var bestDist = Infinity;
+            ids.forEach(function(id, idx) {
+                var el = document.getElementById(id);
+                if (!el) return;
+                var rect = el.getBoundingClientRect();
+                var dist = Math.abs(rect.top - targetY);
+                if (rect.top <= targetY + 10 && dist < bestDist) { bestDist = dist; bestIdx = idx; }
+            });
+            return bestIdx;
+        }
+
+        function updateIndicatorDot() {
+            if (!indicatorDot) return;
+            // Reuse cached tocLevel1Items and tocLevel2Items
+            var activeIdx = 0;
+            var idx = 0;
+            tocLevel1Items.forEach(function(item) {
+                if (item.classList.contains('active')) activeIdx = idx;
+                idx++;
+            });
+            tocLevel2Items.forEach(function(item) {
+                if (item.classList.contains('active')) activeIdx = idx;
+                idx++;
+            });
+            var allLinks = tocLevel1Items.length + tocLevel2Items.length;
+            var maxTop = 68; // 80px trigger - 12px dot
+            var ratio = allLinks > 1 ? activeIdx / (allLinks - 1) : 0;
+            indicatorDot.style.top = (ratio * maxTop) + 'px';
+        }
 
         function updateScrollIndicator() {
             if (!scrollContainer) return;
-            const scrollTop = scrollContainer.scrollTop;
-            const scrollHeight = scrollContainer.scrollHeight - scrollContainer.clientHeight;
-            const scrollPercent = (scrollTop / scrollHeight) * 100;
+            var scrollTop = scrollContainer.scrollTop;
+            var scrollHeight = scrollContainer.scrollHeight - scrollContainer.clientHeight;
+            var scrollPercent = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
             if (progressBar) progressBar.style.width = scrollPercent + '%';
-            const sectionHeight = scrollContainer.clientHeight;
-            const currentSection = Math.round(scrollTop / sectionHeight);
-            scrollDots.forEach(function(dot, index) {
-                dot.classList.toggle('active', index === currentSection);
+
+            var currentSection = getCurrentSectionIndex();
+            var activeSubIdx = getActiveSubIndex(currentSection);
+
+            // Update level-1 items
+            tocLevel1Items.forEach(function(item, idx) {
+                item.classList.toggle('active', idx === currentSection);
             });
+
+            // Update level-2 items
+            tocLevel2Items.forEach(function(item) {
+                var subIdx = parseInt(item.getAttribute('data-sub'), 10);
+                var parentItem = item.closest('.toc-item-level1');
+                var parentIdx = parentItem ? parseInt(parentItem.getAttribute('data-section'), 10) : -1;
+                item.classList.toggle('active', parentIdx === currentSection && subIdx === activeSubIdx);
+            });
+
+            updateIndicatorDot();
         }
 
-        if (scrollContainer) {
-            scrollContainer.addEventListener('scroll', updateScrollIndicator);
-            updateScrollIndicator();
-        }
-
-        scrollDots.forEach(function(dot, index) {
-            dot.addEventListener('click', function() {
-                var target = sections[index];
-                if (target) target.scrollIntoView({ behavior: 'smooth' });
-            });
-        });
-
-        // ── Header scroll effect ──
         var header = document.querySelector('header');
-        window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 50) header.classList.add('scrolled');
-            else header.classList.remove('scrolled');
-        });
+
         if (scrollContainer) {
+            var indicatorRafId = null;
             scrollContainer.addEventListener('scroll', function() {
-                if (scrollContainer.scrollTop > 50) header.classList.add('scrolled');
+                var st = scrollContainer.scrollTop;
+                // Header effect
+                if (st > 50) header.classList.add('scrolled');
                 else header.classList.remove('scrolled');
+                // Indicator update (throttled)
+                if (!indicatorRafId) {
+                    indicatorRafId = requestAnimationFrame(function() {
+                        updateScrollIndicator();
+                        indicatorRafId = null;
+                    });
+                }
             });
+            requestAnimationFrame(updateScrollIndicator);
         }
+
+        // Scroll a target element to the top of scrollContainer
+        function scrollToTarget(el, offset) {
+            if (!el || !scrollContainer) return;
+            var elTop = el.getBoundingClientRect().top;
+            var containerTop = scrollContainer.getBoundingClientRect().top;
+            var targetY = elTop - containerTop + scrollContainer.scrollTop + (offset || 0);
+            scrollContainer.scrollTo({ top: targetY, behavior: 'smooth' });
+        }
+
+        // Click handlers — level-1 items scroll to section
+        tocLevel1Items.forEach(function(item) {
+            item.addEventListener('click', function(e) {
+                var index = parseInt(item.getAttribute('data-section'), 10);
+                scrollToTarget(sections[index], 0);
+            });
+        });
+
+        // Click handlers — level-2 items scroll to their heading
+        tocLevel2Items.forEach(function(item) {
+            item.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var parentItem = item.closest('.toc-item-level1');
+                var sectionIdx = parentItem ? parseInt(parentItem.getAttribute('data-section'), 10) : 0;
+                var subIdx = parseInt(item.getAttribute('data-sub'), 10);
+                var ids = subSectionMap[sectionIdx];
+                if (ids && ids[subIdx]) {
+                    scrollToTarget(document.getElementById(ids[subIdx]), -60);
+                } else {
+                    scrollToTarget(sections[sectionIdx], 0);
+                }
+            });
+        });
 
         // ── Scroll reveal ──
-        function reveal() {
-            document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale').forEach(function(el) {
-                var top = el.getBoundingClientRect().top;
-                if (top < window.innerHeight - 100) el.classList.add('revealed');
+        var revealObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    revealObserver.unobserve(entry.target);
+                }
             });
-        }
-        window.addEventListener('scroll', reveal);
-        if (scrollContainer) scrollContainer.addEventListener('scroll', reveal);
-        reveal();
+        }, { root: scrollContainer, rootMargin: '0px 0px -100px 0px' });
+        document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale').forEach(function(el) {
+            revealObserver.observe(el);
+        });
 
         // ── Mode tabs ──
         document.querySelectorAll('.mode-tab').forEach(function(tab) {
@@ -1404,51 +1716,119 @@ eon-ups.org">neon-ups.org</a></p>
         trailStyle.textContent = '@keyframes trailFade{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(0)}}';
         document.head.appendChild(trailStyle);
 
-        // ── Language management ──
-        var LANG_KEY = 'neonups_lang_pref';
+        // ── i18n Engine ──
+        var I18N = (function() {
+            var LANG_KEY = 'neonups_lang_pref';
+            var CACHE_KEY = 'neonups_i18n_cache';
+            var VERSION = '1';
+            var currentLang = 'en';
 
-        function getBrowserLang() {
-            var nav = navigator.language || navigator.userLanguage || '';
-            return nav.startsWith('zh') ? 'zh' : 'en';
-        }
+            function getBrowserLang() {
+                return (navigator.language || '').startsWith('zh') ? 'zh' : 'en';
+            }
 
-        function getInitialLang() {
-            var params = new URLSearchParams(window.location.search);
-            var p = params.get('lang');
-            if (p === 'zh' || p === 'en') return p;
-            try {
-                var s = localStorage.getItem(LANG_KEY);
-                if (s === 'zh' || s === 'en') return s;
-            } catch(e) {}
-            return getBrowserLang();
-        }
+            function getInitialLang() {
+                var p = new URLSearchParams(location.search).get('lang');
+                if (p === 'zh' || p === 'en') return p;
+                try { var s = localStorage.getItem(LANG_KEY); if (s === 'zh' || s === 'en') return s; } catch(e) {}
+                return getBrowserLang();
+            }
 
-        function setLang(lang) {
-            document.querySelectorAll('[data-lang]').forEach(function(el) {
-                el.classList.toggle('active', el.getAttribute('data-lang') === lang);
-            });
-            document.querySelectorAll('.lang-btn').forEach(function(btn) {
-                btn.classList.toggle('active', btn.getAttribute('data-lang-code') === lang);
-            });
-            // Update mode tab text
-            document.querySelectorAll('.mode-tab').forEach(function(tab) {
-                var txt = lang === 'zh' ? tab.getAttribute('data-lang-zh') : tab.getAttribute('data-lang-en');
-                if (txt) tab.textContent = txt;
-            });
-            document.documentElement.lang = lang;
-            try { localStorage.setItem(LANG_KEY, lang); } catch(e) {}
-            var url = new URL(window.location);
-            url.searchParams.set('lang', lang);
-            window.history.replaceState({}, '', url);
-        }
+            function loadLocale(lang) {
+                try {
+                    var cache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+                    if (cache._v === VERSION && cache[lang]) return Promise.resolve(cache[lang]);
+                } catch(e) {}
+                return fetch('/locales/' + lang + '.json')
+                    .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+                    .then(function(data) {
+                        try {
+                            var cache = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
+                            cache._v = VERSION;
+                            cache[lang] = data;
+                            localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+                        } catch(e) {}
+                        return data;
+                    });
+            }
 
-        document.querySelectorAll('.lang-btn').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                setLang(btn.getAttribute('data-lang-code'));
-            });
-        });
+            function getNested(obj, path) {
+                return path.split('.').reduce(function(o, k) { return (o && o[k] !== undefined) ? o[k] : undefined; }, obj);
+            }
 
-        setLang(getInitialLang());
+            function applyLocale(data) {
+                if (!data) return;
+
+                // data-i18n → textContent
+                document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                    if (el.hasAttribute('data-i18n-html')) return; // skip if also has data-i18n-html
+                    if (el.hasAttribute('data-i18n-attr')) return; // skip meta tags
+                    var key = el.getAttribute('data-i18n');
+                    if (!key) return;
+                    var val = getNested(data, key);
+                    if (val !== undefined && val !== null) el.textContent = val;
+                });
+
+                // data-i18n-html → innerHTML
+                document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+                    var key = el.getAttribute('data-i18n-html');
+                    if (!key) return;
+                    var val = getNested(data, key);
+                    if (val !== undefined && val !== null) el.innerHTML = val;
+                });
+
+                // data-i18n-attr → set attributes (for meta tags etc.)
+                document.querySelectorAll('[data-i18n-attr]').forEach(function(el) {
+                    var attrs = el.getAttribute('data-i18n-attr').split(',');
+                    var key = el.getAttribute('data-i18n');
+                    if (!key) return;
+                    attrs.forEach(function(attr) {
+                        attr = attr.trim();
+                        var val = getNested(data, key);
+                        if (val !== undefined && val !== null) el.setAttribute(attr, val);
+                    });
+                });
+
+                // title tag
+                if (data.meta && data.meta.title) document.title = data.meta.title;
+            }
+
+            function updateUI(lang) {
+                document.querySelectorAll('.lang-btn').forEach(function(btn) {
+                    btn.classList.toggle('active', btn.getAttribute('data-lang-code') === lang);
+                });
+                document.documentElement.lang = lang;
+                try { localStorage.setItem(LANG_KEY, lang); } catch(e) {}
+                var url = new URL(location.href);
+                url.searchParams.set('lang', lang);
+                history.replaceState({}, '', url);
+            }
+
+            function switchLang(lang) {
+                if (lang === currentLang) return;
+                currentLang = lang;
+                updateUI(lang);
+                loadLocale(lang).then(applyLocale);
+            }
+
+            function init() {
+                var lang = getInitialLang();
+                currentLang = lang;
+                updateUI(lang);
+
+                document.querySelectorAll('.lang-btn').forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        switchLang(this.getAttribute('data-lang-code'));
+                    });
+                });
+
+                return loadLocale(lang).then(applyLocale);
+            }
+
+            return { init: init, switchLang: switchLang };
+        })();
+
+        I18N.init();
 
         // ── Email anti-spam ──
         var encodedUser = 'aGVsbG8=';

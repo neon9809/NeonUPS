@@ -1,0 +1,257 @@
+{
+  "meta": {
+    "title": "NeonUPS — Open Source Universal Modular Power Management",
+    "description": "NeonUPS - Open Source Universal Modular Power Management System. Build a modular, intelligent, and sustainable DC power system for home, makers, and remote infrastructure.",
+    "ogTitle": "NeonUPS - Open Source Universal Modular Power Management",
+    "ogDescription": "A highly modular, open-source intelligent power management system based on 36V DC bus and CAN communication."
+  },
+
+  "langSwitch": {
+    "en": "EN",
+    "zh": "中文"
+  },
+
+  "indicator": {
+    "navTitle": "Navigation",
+    "hero": "Hero",
+    "background": "Background",
+    "philosophy": "Philosophy",
+    "scenarios": "Scenarios",
+    "physArch": "Phys. & Elec. Arch",
+    "connector": "Connector",
+    "formFactors": "Form Factors",
+    "safety": "Safety",
+    "ecoBridge": "Eco Bridge",
+    "commArch": "Comm. Arch",
+    "canBus": "CAN Bus",
+    "collabModes": "Collab Modes",
+    "watchdog": "Watchdog",
+    "observability": "Observability",
+    "redundancy": "Redundancy",
+    "recruit": "Recruit"
+  },
+
+  "hero": {
+    "subtitle": "Open Source Universal Modular Power Management System — build your own intelligent DC power center like Lego blocks.",
+    "badges": "<span class=\"badge\">⚡ 36V DC Bus</span><span class=\"badge\">🔄 Hot-Swap Modules</span><span class=\"badge\">🧠 CAN Communication</span><span class=\"badge\">🌐 IoT &amp; Remote Control</span><span class=\"badge\">🔓 Fully Open Source</span>",
+    "githubLink": "neon9809/NeonUPS on GitHub"
+  },
+
+  "background": {
+    "eyebrow": "The Problem",
+    "heading": "Background & Problem",
+    "content": "<p>DC power in our daily life is extremely fragmented. Every device comes with its own adapter, leading to bloated power strips, tangled cables, wasted energy, and no way to achieve centralized management or battery-backed uptime. When upgrading devices, the entire power supply chain is often discarded. The rise of smart homes magnifies this pain — curtain motors, sensors, and lights each drag independent power bricks, making wiring, maintenance and emergency power a constant headache.</p>"
+  },
+
+  "philosophy": {
+    "eyebrow": "Our Vision",
+    "heading": "Core Philosophy",
+    "content": "<p>We envision a <span class=\"highlight\">highly modular, open-source intelligent power management system</span>. It's a power building-block platform: a basic host frame with expandable slots accepts standardized functional modules — input, output, battery, IoT control, etc. Users assemble their own power center like Lego, tailored to their needs, with intelligent network management.</p><p><strong>Two fundamental principles:</strong></p><ul style=\"text-align:left;max-width:700px;margin:0 auto;color:var(--text-secondary);font-size:1.05rem;line-height:1.8\"><li style=\"margin-bottom:10px\"><strong style=\"color:#f0f4ff\">Sustainability through Open Source:</strong> Communication protocols and specifications are fully open. Anyone can manufacture compatible modules, preventing iterative device waste.</li><li><strong style=\"color:#f0f4ff\">On-demand Modularity:</strong> Every function is an independent hot-swap module. Need more power? Parallel host frames. Need more features? Add modules. Never obsolete.</li></ul>"
+  },
+
+  "scenarios": {
+    "eyebrow": "Use Cases",
+    "heading": "Typical Scenarios",
+    "cards": [
+      {
+        "heading": "🏠 Home Energy Center",
+        "content": "A shoebox-sized host powers your fiber modem, router, NAS, smart speakers, DC lighting, curtains, robot vacuum, and security gear — all from one place, intelligently distributing energy from grid, solar, and battery. Seamless battery backup during outages keeps the network alive."
+      },
+      {
+        "heading": "🔧 Maker Workbench",
+        "content": "Say goodbye to messy bench supplies. Insert different modules for multiple adjustable voltages, USB fast charging, and battery storage — all outputs programmable."
+      },
+      {
+        "heading": "🌍 Remote Device Hosting",
+        "content": "Monitor and control every power channel for equipment in a remote hometown or server room via smartphone. Remotely reboot or switch power on anomaly."
+      }
+    ]
+  },
+
+  "physArch": {
+    "eyebrow": "Hardware Design",
+    "heading": "Physical & Electrical Architecture",
+
+    "busTopo": {
+      "label": "36V DC Bus Topology",
+      "caption": "Frames connect in star or parallel topology. Add frames to scale power — like stacking server PSUs.",
+      "svg": {
+        "mainFrame": "MAIN FRAME",
+        "canController": "CAN Controller",
+        "busArbiter": "Bus Arbiter",
+        "frame2": "FRAME 2",
+        "standbyParallel": "Standby / Parallel",
+        "frameN": "FRAME N",
+        "expandable": "Expandable",
+        "acDcInput": "AC-DC Input",
+        "inputModule": "Input Module",
+        "battery": "Battery",
+        "storageModule": "Storage Module",
+        "multiVOutput": "Multi-V Output",
+        "outputModule": "Output Module",
+        "iotComms": "IoT / Comms",
+        "commModule": "Comm Module",
+        "panel86": "86-Panel",
+        "remote": "Remote",
+        "wallModule": "Wall Module",
+        "viaWallWiring": "via wall wiring",
+        "selvSafe": "SELV < 60V ✓ Safe"
+      }
+    },
+
+    "connector": {
+      "heading": "Connector Specification",
+      "cards": [
+        {
+          "heading": "Power In / Out",
+          "content": "5.5mm DC jacks with distinct male/female or color coding to prevent reverse insertion during hot-swap.",
+          "tag": "8A / port · Dual-port for high power"
+        },
+        {
+          "heading": "CAN Communication Bus",
+          "content": "RJ45 (8P8C) physical connector carrying CAN_H / CAN_L differential signal. Locking tab removed for tool-free quick release.",
+          "tag": "⚠ NOT Ethernet — CAN only"
+        },
+        {
+          "heading": "Module–Frame Slot Interface",
+          "content": "Each slot provides both power contacts and CAN signal contacts. Critical modules have a software lock — must request removal via software before physically unplugging.",
+          "tag": "Hot-Swap Ready · Software Lock"
+        }
+      ]
+    },
+
+    "modules": {
+      "heading": "Module Form Factors",
+      "local": {
+        "heading": "Local Modules",
+        "content": "Inserted directly into standard slots on the host frame. Includes AC-DC inputs, solar MPPT, multi-voltage outputs, USB PD, battery modules, and communication modules."
+      },
+      "remote": {
+        "heading": "Remote Modules (86-Panel)",
+        "content": "Standard 86-type wall panels installed at endpoints, connected back to the host frame via 36V DC wiring inside the walls. A Type-C PD panel at bedside replaces bulky adapters entirely."
+      }
+    },
+
+    "safety": {
+      "heading": "Multi-Layer Hardware Safety",
+      "layers": [
+        {
+          "heading": "Per-Module Protection",
+          "content": "Every module has built-in over-current, over-temperature, and short-circuit protection — independent of any external signal."
+        },
+        {
+          "heading": "Inter-Frame Link Current Limit",
+          "content": "The interconnection module monitors real-time current on the link between frames and enforces a hardware current ceiling."
+        },
+        {
+          "heading": "CO₂ Emergency Module",
+          "content": "Slow-release mechanism via micro solenoid valve. Triggered only when both high-temperature threshold AND smoke particulates are detected simultaneously — avoiding false triggers. A supercapacitor backup ensures the valve opens even after main power is cut."
+        }
+      ]
+    },
+
+    "eco": {
+      "heading": "Ecosystem Bridging",
+      "atx": {
+        "heading": "ATX PSU Converter",
+        "content": "Leverage the massive inventory of ATX power supplies as a stable, high-power 36V bus source."
+      },
+      "server": {
+        "heading": "Server PSU Converter",
+        "content": "Adapt second-market server hot-swap PSUs to drastically lower system power costs."
+      }
+    }
+  },
+
+  "commArch": {
+    "eyebrow": "Software & Protocol",
+    "heading": "Communication Architecture",
+
+    "canBus": {
+      "label": "CAN Bus — How It Works",
+      "caption": "CAN controller lives in the frame — modules only need a transceiver chip. Auto-assigns CAN ID on insertion. No factory pre-configuration needed."
+    },
+
+    "modes": {
+      "heading": "Multi-Frame Collaboration Modes",
+      "hint": "Click to explore each redundancy strategy",
+      "tabs": {
+        "hotStandby": "Hot Standby",
+        "loadSharing": "Load Sharing",
+        "fullyDistributed": "Fully Distributed"
+      },
+      "hotStandby": {
+        "desc": "One frame acts as the active controller sending commands, while another listens. If the active frame's heartbeat is lost, the standby automatically takes over — zero manual intervention.",
+        "svgFailover": "If heartbeat lost → Frame B auto-takes-over"
+      },
+      "loadSharing": {
+        "desc": "Each frame manages its own group of modules independently. No interference between groups. Ideal for partitioned deployments where different zones need separate control."
+      },
+      "fullyDistributed": {
+        "desc": "Every frame can issue control commands. Modules respond according to their addresses. Maximum flexibility for complex distributed deployments."
+      }
+    },
+
+    "watchdog": {
+      "heading": "Distributed Watchdog Architecture",
+      "hint": "Four tiers of protection — from hardware to cloud, each independently guarding your system",
+      "tiers": [
+        {
+          "badge": "Tier 1 · Hardware",
+          "heading": "Module Self-Protection",
+          "content": "Every module ships with built-in pure-hardware over-current and over-temperature protection. Zero dependency on external signals — the ultimate safety fallback that never fails even if the bus goes down."
+        },
+        {
+          "badge": "Tier 2 · Link",
+          "heading": "Frame Direct Heartbeat",
+          "content": "The host frame sends periodic heartbeat frames to all modules in its slots. If a module doesn't receive a heartbeat within the timeout window, it executes a pre-defined safe action. Fastest local software-level protection."
+        },
+        {
+          "badge": "Tier 3 · Service",
+          "heading": "Programmable Remote Watchdog",
+          "content": "User-defined watchdog policies deployed from a remote server via communication modules. Configurable timeout, retry count, and triggered action (restart / power off / switch supply). Ideal for remote hosting and unattended infrastructure."
+        },
+        {
+          "badge": "Tier 4 · Redundant Cross-Feed",
+          "heading": "Multi-Path Consensus Protection",
+          "content": "Multiple communication modules (4G, Wi-Fi, Ethernet, LoRa) each independently maintain watchdog heartbeats. A single link failure doesn't kill the watchdog. In extreme scenarios, multiple watchdog sources watch each other — a catastrophic action requires consensus from several sources simultaneously, preventing any single false judgment from causing an erroneous power-down."
+        }
+      ]
+    },
+
+    "observability": {
+      "heading": "Full-Module Observability",
+      "cards": [
+        {
+          "heading": "Input / Output Modules",
+          "metrics": "<span class=\"obs-metric\">Voltage</span><span class=\"obs-metric\">Current</span><span class=\"obs-metric\">Power</span><span class=\"obs-metric\">Switch State</span>"
+        },
+        {
+          "heading": "Battery Module",
+          "metrics": "<span class=\"obs-metric\">Pack Voltage</span><span class=\"obs-metric\">Cell Resistance</span><span class=\"obs-metric\">Temperature</span><span class=\"obs-metric\">State of Health</span>"
+        },
+        {
+          "heading": "Interconnection Module",
+          "metrics": "<span class=\"obs-metric\">Link Current</span><span class=\"obs-metric\">Load Awareness</span>"
+        }
+      ]
+    },
+
+    "network": {
+      "heading": "Network Access & Redundancy",
+      "caption": "Plug in multiple communication modules simultaneously. If one network fails, another takes over automatically — critical infrastructure stays reachable."
+    }
+  },
+
+  "recruit": {
+    "heading": "Founding Team Recruitment",
+    "content": "We're looking for passionate volunteers (individuals, communities, organizations or companies) to shape the open-source power standard of the future. This is a <strong>purely pro-bono, community-driven</strong> effort. If our vision resonates, join us.",
+    "roles": "<span class=\"role-tag\">⚡ Power Electronics</span><span class=\"role-tag\">🔌 Electrical Design</span><span class=\"role-tag\">📡 Communication Protocols</span><span class=\"role-tag\">🏠 Smart Home Experience</span><span class=\"role-tag\">🛠 Embedded Systems</span><span class=\"role-tag\">📐 Mechanical / Enclosure</span>",
+    "callToAction": "<p>Send your resume / portfolio, or just share your ideas and critique. Contributors who bring significant insights may be invited to the founding team.</p>",
+    "note": "(Email address will be decoded on hover/click — spam protection enabled)"
+  },
+
+  "footer": {
+    "text": "© 2026 NeonUPS Project. Open source under MIT license. <a href=\"https://github.com/neon9809/NeonUPS\" target=\"_blank\" rel=\"noopener noreferrer\">GitHub</a> · <a href=\"https://neon-ups.org\">neon-ups.org</a>"
+  }
+}
