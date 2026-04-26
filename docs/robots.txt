@@ -1,0 +1,6 @@
+# https://neon-ups.org/robots.txt
+User-agent: *
+Allow: /
+Disallow: /locales/
+
+Sitemap: https://neon-ups.org/sitemap.xml
