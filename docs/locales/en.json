@@ -244,14 +244,6 @@
     }
   },
 
-  "recruit": {
-    "heading": "Founding Team Recruitment",
-    "content": "We're looking for passionate volunteers (individuals, communities, organizations or companies) to shape the open-source power standard of the future. This is a <strong>purely pro-bono, community-driven</strong> effort. If our vision resonates, join us.",
-    "roles": "<span class=\"role-tag\">⚡ Power Electronics</span><span class=\"role-tag\">🔌 Electrical Design</span><span class=\"role-tag\">📡 Communication Protocols</span><span class=\"role-tag\">🏠 Smart Home Experience</span><span class=\"role-tag\">🛠 Embedded Systems</span><span class=\"role-tag\">📐 Mechanical / Enclosure</span>",
-    "callToAction": "<p>Send your resume / portfolio, or just share your ideas and critique. Contributors who bring significant insights may be invited to the founding team.</p>",
-    "note": "(Email address will be decoded on hover/click — spam protection enabled)"
-  },
-
   "about": {
     "eyebrow": "Name Explained",
     "heading": "About the Name \"NeonUPS\"",
@@ -265,6 +257,14 @@
     "nodeHeading": "Node",
     "nodeDesc": "Each host is an intelligent node in an energy network, achieving peer-to-peer communication and redundant cooperation between modules and hosts via CAN bus. Multiple nodes can flexibly form hot-standby, load-sharing, or fully distributed arrays, providing an infinitely stackable power foundation for homes, labs, and remote sites.",
     "closing": "NeonUPS — more than power supply; it is an ever-online energy operating network built from nimble nodes."
+  },
+
+  "recruit": {
+    "heading": "Founding Team Recruitment",
+    "content": "We're looking for passionate volunteers (individuals, communities, organizations or companies) to shape the open-source power standard of the future. This is a <strong>purely pro-bono, community-driven</strong> effort. If our vision resonates, join us.",
+    "roles": "<span class=\"role-tag\">⚡ Power Electronics</span><span class=\"role-tag\">🔌 Electrical Design</span><span class=\"role-tag\">📡 Communication Protocols</span><span class=\"role-tag\">🏠 Smart Home Experience</span><span class=\"role-tag\">🛠 Embedded Systems</span><span class=\"role-tag\">📐 Mechanical / Enclosure</span>",
+    "callToAction": "<p>Send your resume / portfolio, or just share your ideas and critique. Contributors who bring significant insights may be invited to the founding team.</p>",
+    "note": "(Email address will be decoded on hover/click — spam protection enabled)"
   },
 
   "footer": {
