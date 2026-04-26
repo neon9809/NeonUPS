@@ -28,6 +28,7 @@
     "watchdog": "Watchdog",
     "observability": "Observability",
     "redundancy": "Redundancy",
+    "about": "About",
     "recruit": "Recruit"
   },
 
@@ -249,6 +250,21 @@
     "roles": "<span class=\"role-tag\">⚡ Power Electronics</span><span class=\"role-tag\">🔌 Electrical Design</span><span class=\"role-tag\">📡 Communication Protocols</span><span class=\"role-tag\">🏠 Smart Home Experience</span><span class=\"role-tag\">🛠 Embedded Systems</span><span class=\"role-tag\">📐 Mechanical / Enclosure</span>",
     "callToAction": "<p>Send your resume / portfolio, or just share your ideas and critique. Contributors who bring significant insights may be invited to the founding team.</p>",
     "note": "(Email address will be decoded on hover/click — spam protection enabled)"
+  },
+
+  "about": {
+    "eyebrow": "Name Explained",
+    "heading": "About the Name \"NeonUPS\"",
+    "intro": "<p>The project's full name is <strong>Nimble Energy Operating Node</strong>, abbreviated as <strong>NEON</strong>, combined with the common acronym <strong>UPS</strong> (Uninterruptible Power Supply) to form <strong>NeonUPS</strong>. This name captures the project's core identity across four dimensions:</p>",
+    "nimbleHeading": "Nimble",
+    "nimbleDesc": "Every function is implemented as an independent, hot-swappable module — users can freely assemble their power center like building blocks. The host is as compact as a shoebox, yet scales flexibly by paralleling multiple hosts, rejecting bulk and bloat.",
+    "energyHeading": "Energy",
+    "energyDesc": "The project focuses not merely on supplying power, but on fine-grained management of multi-form energy — from grid AC, solar PV, to battery storage; from inputs, outputs, to the health of every single cell — all brought under unified, modular management.",
+    "operatingHeading": "Operating",
+    "operatingDesc": "It is far more than a passive collector or object — it is a real-time, actively orchestrating energy hub. The system continuously executes output switching control, multi-source energy changeover, distributed watchdog strategies, and remote maintenance actions. Whether the grid fails or a device acts up, it runs, decides, and protects, keeping critical loads online.",
+    "nodeHeading": "Node",
+    "nodeDesc": "Each host is an intelligent node in an energy network, achieving peer-to-peer communication and redundant cooperation between modules and hosts via CAN bus. Multiple nodes can flexibly form hot-standby, load-sharing, or fully distributed arrays, providing an infinitely stackable power foundation for homes, labs, and remote sites.",
+    "closing": "NeonUPS — more than power supply; it is an ever-online energy operating network built from nimble nodes."
   },
 
   "footer": {

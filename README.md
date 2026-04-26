@@ -90,3 +90,14 @@ All modules report their operating parameters in real time via the CAN bus:
 **Network Access and Redundancy**
 
 Communication modules bridge the CAN bus data to external networks, enabling remote management. The system encourages inserting multiple communication modules of different types that back each other up, automatically switching when one network fails, ensuring continuous control for critical infrastructure.
+
+## 5. About the Name "NeonUPS"
+
+The project's full name is **Nimble Energy Operating Node**, abbreviated as **NEON**, combined with the common acronym **UPS** (Uninterruptible Power Supply) to form **NeonUPS**. This name captures the project's core identity across four dimensions:
+
+- **Nimble** — Every function is implemented as an independent, hot-swappable module — users can freely assemble their power center like building blocks. The host is as compact as a shoebox, yet scales flexibly by paralleling multiple hosts, rejecting bulk and bloat.
+- **Energy** — The project focuses not merely on supplying power, but on fine-grained management of multi-form energy — from grid AC, solar PV, to battery storage; from inputs, outputs, to the health of every single cell — all brought under unified, modular management.
+- **Operating** — It is far more than a passive collector or object — it is a real-time, actively orchestrating energy hub. The system continuously executes output switching control, multi-source energy changeover, distributed watchdog strategies, and remote maintenance actions. Whether the grid fails or a device acts up, it runs, decides, and protects, keeping critical loads online.
+- **Node** — Each host is an intelligent node in an energy network, achieving peer-to-peer communication and redundant cooperation between modules and hosts via CAN bus. Multiple nodes can flexibly form hot-standby, load-sharing, or fully distributed arrays, providing an infinitely stackable power foundation for homes, labs, and remote sites.
+
+NeonUPS — more than power supply; it is an ever-online energy operating network built from nimble nodes.

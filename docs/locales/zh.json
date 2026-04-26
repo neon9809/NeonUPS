@@ -28,6 +28,7 @@
     "watchdog": "看门狗",
     "observability": "可观测",
     "redundancy": "网络冗余",
+    "about": "关于",
     "recruit": "招募"
   },
 
@@ -249,6 +250,21 @@
     "roles": "<span class=\"role-tag\">⚡ 电力电子</span><span class=\"role-tag\">🔌 电气设计</span><span class=\"role-tag\">📡 通讯协议</span><span class=\"role-tag\">🏠 智能家居</span><span class=\"role-tag\">🛠 嵌入式系统</span><span class=\"role-tag\">📐 机械结构</span>",
     "callToAction": "<p>请将简历/作品集，或任何想法与建议发送给我们。提出重要意见的贡献者将被邀请加入创始团队。</p>",
     "note": "（悬停或点击时显示真实邮箱 — 已启用防垃圾邮件保护）"
+  },
+
+  "about": {
+    "eyebrow": "名称释义",
+    "heading": "关于名称「NeonUPS」",
+    "intro": "<p>项目全称为 <strong>Nimble Energy Operating Node</strong>（灵巧能源运行节点），首字母缩写成 <strong>NEON</strong>，并结合「不间断电源系统」的通用缩写 <strong>UPS</strong>，组成 <strong>NeonUPS</strong>。这一名字从四个维度刻画出项目的核心面貌：</p>",
+    "nimbleHeading": "Nimble（灵巧敏捷）",
+    "nimbleDesc": "所有功能都以独立、可热插拔的模块实现，用户能像搭积木一样自由组合电源中心。主机体积小巧如鞋盒，却能通过多主机并机灵活扩展，拒绝笨重与臃肿。",
+    "energyHeading": "Energy（能量/电能）",
+    "energyDesc": "项目专注的不只是供电，更是对多形态能源的精细管控——从市电、光伏到电池储能，从输入、输出到每节电池的健康状态，都以模块化的方式纳入统一管理。",
+    "operatingHeading": "Operating（持续运行与主动执行）",
+    "operatingDesc": "它远不止是被动的采集器或对象，而是一个实时在线、主动编排的能源中枢。系统持续执行各路输出的开闭控制、多源能量切换、分布式看门狗策略以及远程维护动作。无论电网中断还是设备异常，它都在运转、决策、保护，确保关键负载不断线。",
+    "nodeHeading": "Node（可互联的节点）",
+    "nodeDesc": "每台主机都是能源网络中的一个智能节点，通过 CAN 总线实现模块与模块、主机与主机之间的对等通信与冗余协作。多个节点可以灵活组成热备、负载分担或全分布式的阵列，为家庭、实验室乃至远程站点提供可无限堆叠的电力基础。",
+    "closing": "NeonUPS —— 不止是供电，更是一张由灵巧节点构成的、永远在线的能源运行网络。"
   },
 
   "footer": {

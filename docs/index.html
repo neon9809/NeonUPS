@@ -624,6 +624,51 @@
         .email-link:hover { background: #80f0ff; box-shadow: 0 0 40px rgba(0,229,255,.7); color: #000; transform: translateY(-5px) scale(1.05); }
         .note { font-size: .85rem; color: var(--text-secondary); margin-top: 18px; }
 
+        /* ── About ── */
+        .about-card {
+            max-width: 900px; margin: 0 auto; padding: 40px 0;
+        }
+        .about-card h2 {
+            font-size: 2rem; font-weight: 800; margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .about-intro {
+            font-size: 1.05rem; color: var(--text-secondary); line-height: 1.8;
+            margin-bottom: 40px; text-align: center; max-width: 750px; margin-left: auto; margin-right: auto;
+        }
+        .about-intro strong { color: var(--text); }
+        .about-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
+        }
+        @media (max-width: 768px) {
+            .about-grid { grid-template-columns: 1fr; }
+        }
+        .about-item {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 28px 24px;
+            transition: border-color .3s, box-shadow .3s, transform .3s;
+        }
+        .about-item:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 32px rgba(0,229,255,.12);
+            transform: translateY(-4px);
+        }
+        .about-item h3 {
+            font-size: 1.15rem; font-weight: 700; color: var(--accent);
+            margin-bottom: 10px;
+        }
+        .about-item p {
+            font-size: .95rem; color: var(--text-secondary); line-height: 1.7;
+        }
+        .about-closing {
+            margin-top: 40px; text-align: center;
+            font-size: 1.15rem; font-weight: 600; color: var(--text);
+            line-height: 1.8; padding: 24px;
+            border-top: 1px solid var(--border);
+        }
+
         /* ── Footer ── */
         footer { padding: 20px 0; text-align: center; color: var(--text); font-size: 12px; border-top: 1px solid var(--border); scroll-snap-align: start; min-height: 12vh; display: flex; align-items: center; justify-content: center; background: var(--bg); position: relative; z-index: 1; }
         footer p { font-size: 12px; margin: 0 auto; }
@@ -743,6 +788,9 @@
                 </li>
                 <li class="toc-item-level1" data-section="6">
                     <span class="toc-link-level1" data-i18n="indicator.recruit">Recruit</span>
+                </li>
+                <li class="toc-item-level1" data-section="7">
+                    <span class="toc-link-level1" data-i18n="indicator.about">About</span>
                 </li>
             </ul>
         </nav>
@@ -1385,6 +1433,36 @@
                 <div class="note" data-i18n="recruit.note">(Email address will be decoded on hover/click — spam protection enabled)</div>
             </div>
         </section>
+
+        <!-- ══════════ ABOUT ══════════ -->
+        <section>
+            <div class="about-card">
+                <div class="section-eyebrow" data-i18n="about.eyebrow">Name Explained</div>
+                <h2 data-i18n="about.heading">About the Name "NeonUPS"</h2>
+                <div class="about-intro" data-i18n-html="about.intro">
+                    <p>The project's full name is <strong>Nimble Energy Operating Node</strong>, abbreviated as <strong>NEON</strong>, combined with the common acronym <strong>UPS</strong> (Uninterruptible Power Supply) to form <strong>NeonUPS</strong>. This name captures the project's core identity across four dimensions:</p>
+                </div>
+                <div class="about-grid">
+                    <div class="about-item scroll-reveal">
+                        <h3 data-i18n="about.nimbleHeading">Nimble</h3>
+                        <p data-i18n="about.nimbleDesc">Every function is implemented as an independent, hot-swappable module — users can freely assemble their power center like building blocks. The host is as compact as a shoebox, yet scales flexibly by paralleling multiple hosts, rejecting bulk and bloat.</p>
+                    </div>
+                    <div class="about-item scroll-reveal">
+                        <h3 data-i18n="about.energyHeading">Energy</h3>
+                        <p data-i18n="about.energyDesc">The project focuses not merely on supplying power, but on fine-grained management of multi-form energy — from grid AC, solar PV, to battery storage; from inputs, outputs, to the health of every single cell — all brought under unified, modular management.</p>
+                    </div>
+                    <div class="about-item scroll-reveal">
+                        <h3 data-i18n="about.operatingHeading">Operating</h3>
+                        <p data-i18n="about.operatingDesc">It is far more than a passive collector or object — it is a real-time, actively orchestrating energy hub. The system continuously executes output switching control, multi-source energy changeover, distributed watchdog strategies, and remote maintenance actions. Whether the grid fails or a device acts up, it runs, decides, and protects, keeping critical loads online.</p>
+                    </div>
+                    <div class="about-item scroll-reveal">
+                        <h3 data-i18n="about.nodeHeading">Node</h3>
+                        <p data-i18n="about.nodeDesc">Each host is an intelligent node in an energy network, achieving peer-to-peer communication and redundant cooperation between modules and hosts via CAN bus. Multiple nodes can flexibly form hot-standby, load-sharing, or fully distributed arrays, providing an infinitely stackable power foundation for homes, labs, and remote sites.</p>
+                    </div>
+                </div>
+                <div class="about-closing" data-i18n="about.closing">NeonUPS — more than power supply; it is an ever-online energy operating network built from nimble nodes.</div>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -1600,20 +1678,13 @@
 
         function updateIndicatorDot() {
             if (!indicatorDot) return;
-            // Reuse cached tocLevel1Items and tocLevel2Items
             var activeIdx = 0;
-            var idx = 0;
-            tocLevel1Items.forEach(function(item) {
+            tocLevel1Items.forEach(function(item, idx) {
                 if (item.classList.contains('active')) activeIdx = idx;
-                idx++;
             });
-            tocLevel2Items.forEach(function(item) {
-                if (item.classList.contains('active')) activeIdx = idx;
-                idx++;
-            });
-            var allLinks = tocLevel1Items.length + tocLevel2Items.length;
+            var count = tocLevel1Items.length;
             var maxTop = 68; // 80px trigger - 12px dot
-            var ratio = allLinks > 1 ? activeIdx / (allLinks - 1) : 0;
+            var ratio = count > 1 ? activeIdx / (count - 1) : 0;
             indicatorDot.style.top = (ratio * maxTop) + 'px';
         }
 
