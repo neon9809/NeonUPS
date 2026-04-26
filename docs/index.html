@@ -132,6 +132,7 @@
             border-top: 1px solid #2a2e38;
             color: #6a7080; font-size: 12px;
             text-align: center; font-family: var(--font-sans);
+            cursor: pointer; user-select: none;
         }
         .terminal-footer kbd {
             display: inline-block; padding: 2px 8px; border-radius: 4px;
@@ -1627,6 +1628,7 @@
             }
 
             closeBtn.addEventListener('click', hideLoader);
+            footerEl.addEventListener('click', hideLoader);
             document.addEventListener('keydown', onKeyDown);
 
             // Start after a short initial delay
